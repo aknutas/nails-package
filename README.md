@@ -8,7 +8,7 @@ What Is It?
 ----
 This R package provides tools for performing Social Network Analysis (SNA) on citation data. This version is meant to use for R programmers. A general use version to be executed in RStudio is available at the second repository in the alternative [repository repository](https://github.com/aknutas/nails). See more information at the [project page](http://aknutas.github.io/nails/).
 
-SNA is an interesting way for researchers to map large datasets and get insights from new angles. The steps for downloading data from Web of Knowledge and using our tools to process it are detailed below. The set of tools which are required to perform the analyses are free and need a minimum amount of installation. Furthermore, we will soon make a web-based analysis server HAMMER available so that you can process the data without needing to do any installation or manual processing steps.
+SNA is an interesting way for researchers to map large datasets and get insights from new angles. The steps for downloading data from Web of Knowledge and using our tools to process it are detailed below. The set of tools which are required to perform the analyses are free and need a minimum amount of installation. Furthermore, there is a web-based analysis server [HAMMER](http://hammer.nailsproject.net) available so that you can process the data without needing to do any installation or manual processing steps.
 
 The project files are available as open source here in our [Github repository](https://github.com/aknutas/nails-package). If you link or refer to us, please link to our [project page](http://aknutas.github.io/nails/).
 
