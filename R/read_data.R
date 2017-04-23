@@ -2,15 +2,18 @@
 #' Read all .txt-files downloaded from Web of Science within a folder.
 #'
 #' @param filepath Path to a folder
+#' @param fix_names Should field tags be changed to field names?
 #' @return A data frame
-read_wos_folder <- function(filepath) {
+read_wos_folder <- function(filepath, fix_names = TRUE) {
     all_files <- list.files(filepath, pattern = ".txt", full.names = TRUE)
     df <- plyr::ldply(all_files, read.delim2, fileEncoding="UTF-16",
                quote="", row.names=NULL, stringsAsFactors = FALSE)
     df_names <- names(df)[2:length(names(df))]
     df <- df[, 1:(ncol(df) - 1)]
     names(df) <- df_names
-    names(df) <- fix_column_names(names(df))
+    if(fix_names) {
+        names(df) <- fix_column_names(names(df))
+    }
     return(df)
 }
 
@@ -18,14 +21,17 @@ read_wos_folder <- function(filepath) {
 #' Read a .txt-file downloaded from Web of Science.
 #'
 #' @param filepath Path to a folder
+#' @param fix_names Should field tags be changed to field names?
 #' @return A data frame
-read_wos_txt <- function(filepath) {
+read_wos_txt <- function(filepath, fix_names = TRUE) {
     df <- read.delim2(filepath, fileEncoding="UTF-16",
                       quote="", row.names=NULL, stringsAsFactors = FALSE)
     df_names <- names(df)[2:length(names(df))]
     df <- df[, 1:(ncol(df) - 1)]
     names(df) <- df_names
-    names(df) <- fix_column_names(names(df))
+    if (fix_names) {
+        names(df) <- fix_column_names(names(df))
+    }
     return(df)
 }
 
@@ -44,4 +50,18 @@ fix_column_names <- function(column_names) {
     fields[fields == "DigitalObjectIdentifier(DOI)" ] <- "DOI"
 
     return(fields)
+}
+
+#' Check the data frame columns.
+#' @param df A data frame
+#' @return An integer from 1 to 3
+check_data <- function(df) {
+    if (isTRUE(all.equal(names(df), original_fieldtags))) {
+        return(1)
+    }
+    if (isTRUE(all.equal(names(df), fixed_fieldtags))) {
+        return(2)
+    } else {
+        return(3)
+    }
 }

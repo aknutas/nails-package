@@ -4,10 +4,12 @@
 \alias{read_wos_txt}
 \title{Read a .txt-file downloaded from Web of Science.}
 \usage{
-read_wos_txt(filepath)
+read_wos_txt(filepath, fix_names = TRUE)
 }
 \arguments{
 \item{filepath}{Path to a folder}
+
+\item{fix_names}{Should field tags be changed to field names?}
 }
 \value{
 A data frame

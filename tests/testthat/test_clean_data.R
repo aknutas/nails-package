@@ -4,16 +4,32 @@ context("Cleaning data")
 a <- c("Fo'o", 'Ba"r', "Baz")
 b <- c("Fo'o", 'Ba"r', "Baz")
 c <- c("Fo'o", 'Ba"r', "Baz")
-df_1 <- data.frame(a, b, c, stringsAsFactors = FALSE)
-
-a <- c("Foo", 'Bar', "Baz")
-b <- c("Foo", 'Bar', "Baz")
-df_2 <- data.frame(a, b, c, stringsAsFactors = FALSE)
-
-a <- c("foo", 'bar', "baz")
-b <- c("foo", 'bar', "baz")
-df_3 <- data.frame(a, b, c, stringsAsFactors = FALSE)
+df <- data.frame(a, b, c, stringsAsFactors = FALSE)
 
 test_that("quotes are removed", {
-    expect_equal(df_2, remove_quotes(df_1, c("a", "b")))
+    a <- c("Foo", 'Bar', "Baz")
+    b <- c("Foo", 'Bar', "Baz")
+    c <- c("Fo'o", 'Ba"r', "Baz")
+    df_test <- data.frame(a, b, c, stringsAsFactors = FALSE)
+    expect_equal(df_test, remove_quotes(df, c("a", "b")))
 })
+
+test_that("specified columns are changed to lowercase", {
+    a <- c("fo'o", 'ba"r', "baz")
+    b <- c("fo'o", 'ba"r', "baz")
+    c <- c("Fo'o", 'Ba"r', "Baz")
+    df_test <- data.frame(a, b, c, stringsAsFactors = FALSE)
+    expect_equal(df_test, change_lowercase(df, c("a", "b")))
+})
+
+test_that("specified columns are changed to uppercase", {
+    a <- c("FO'O", 'BA"R', "BAZ")
+    b <- c("FO'O", 'BA"R', "BAZ")
+    c <- c("Fo'o", 'Ba"r', "Baz")
+    df_test <- data.frame(a, b, c, stringsAsFactors = FALSE)
+    expect_equal(df_test, change_uppercase(df, c("a", "b")))
+})
+
+
+
+
