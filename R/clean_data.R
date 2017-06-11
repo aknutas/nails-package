@@ -69,18 +69,18 @@ clean_wos_data <- function(df) {
 
     df$Location <- sapply(df$AuthorAddress, get_location)
 
-    df$ReferenceString <- apply(df, 1, makeRef)
+    df$ReferenceString <- apply(df, 1, make_reference)
     df <- df[!duplicated(df[, "ReferenceString"]), ]
 
-    df$ID <- 1:nrow(df)
+    df$id <- 1:nrow(df)
     return(df)
 }
 
 #' Helper function to construct reference strings
 #' @param x A row from a data frame containing cleaned data from WOS
 #' @return  A string in same format as references in CitedReferences
-makeRef <- function(x) {
-    refstring <- getName(x)
+make_reference <- function(x) {
+    refstring <- get_name(x)
     if (!is.na(x["YearPublished"])) {
         refstring <- paste(refstring, x["YearPublished"], sep = ", ")
     }
@@ -102,7 +102,7 @@ makeRef <- function(x) {
 #' Helper function to extract the name of first author
 #' @param x A string containing full author names
 #' @return A string
-getName <- function(x) {
+get_name <- function(x) {
     name = NA
     try( {
         names <- unlist(strsplit(x["AuthorFullName"], ";"))
@@ -120,6 +120,28 @@ getName <- function(x) {
     return(name)
 }
 
+#' Helper function to extract DOIs
+#' @param x A list of strings containing DOI in second element
+#' @return A string cointaining DOI
+get_DOI <- function(x) {
+    DOI <- NA
+    if (length(x) == 2) {
+        DOI <- x[2]
+    }
+    return(DOI)
+}
+
+#' Helper function to extract years
+#' @param x A list of strings containing year in the second element
+#' @return A year number
+get_year <- function(x) {
+    year <- NA
+    if (length(x) > 1) {
+        year <- as.numeric(x[2])
+    }
+    return(year)
+}
+
 #' Helper function for extracting countries and cities from AuthorAddress.
 #' @param x A string containing AuthorAddress
 #' @return A string containing city and country
@@ -135,9 +157,177 @@ get_location <- function(x) {
         city <- sapply(city, trim)
         #   country <- gsub(" ", "", cities[2, ])
         country <- sapply(cities[2, ], trim)
-        return(paste(paste(city, country, sep = ", "), collapse = ";"))
+        location <- paste(paste(city, country, sep = ", "), collapse = ";")
     }
     else {
-        return(NA)
+        location <- NA
     }
+    return(location)
 }
+
+
+#' Organise literature data by selected column
+#' @param df A data frame containing the literature data
+#' @param selection A string with a column name
+#' @param split A character used to split selection
+#' @return A data frame with literature organised by selected column
+arrange_by <- function(df, selection, sep = ";") {
+    # Check data
+
+    # Subset data
+    # POSSIBLE OPTIMIZATION: remove this step!
+    arranged_df <- subset(df, select = c(selection, "id"))
+    # Remove NAs
+    arranged_df <- arranged_df[!is.na(arranged_df[, selection]), ]
+    # Create data frame: selection split by split, each element on a new row,
+    # id copied to new rows
+    arranged_df <- splitstackshape::cSplit(arranged_df,
+                                         splitCols = selection,
+                                         sep = sep, direction = "long")
+    temp <- quote(selection)
+    arranged_df <- arranged_df[,  eval(temp):= as.character(get(selection))]
+    # Removing rows with NA as author name created in previous step
+    arranged_df <- arranged_df[!is.na(arranged_df[, selection]), ]
+    # Merge the rest of the data by id
+    arranged_df <- merge(arranged_df,
+                       df[, !(names(df) %in% c(selection))],
+                       by = "id")
+    return(arranged_df)
+}
+
+#' Helper function for extracting reference lists
+#' @param df A data frame containing literature data
+#' @return A data frame containing each reference in separate row
+get_reference_list <- function(df) {
+    rl <- arrange_by(df, "CitedReferences")
+    names(rl)[names(rl) == 'CitedReferences'] <- "FullReference"
+
+    year <- strsplit(rl$FullReference, ",")
+    rl$ReferenceYear <- sapply(year, get_year)
+    references <- strsplit(rl$FullReference, " DOI ")
+    rl$Reference <- sapply(references, get_DOI)
+    rl$Reference[is.na(rl$Reference)] <- rl$FullReference[is.na(rl$Reference)]
+    return(rl)
+}
+
+#' Helper function for extracting citation network nodes from reference list
+#' @param reference_list A data frame containing reference list
+#' @return A data frame containing citation nodes from reference
+get_reference_nodes <- function(reference_list) {
+    citation_nodes <- data.frame(Id = reference_list$Reference,
+                                YearPublished = reference_list$ReferenceYear,
+                                FullReference = reference_list$FullReference,
+                                id = NA,
+                                PublicationType = NA,
+                                AuthorFullName = NA,
+                                DocumentTitle = NA,
+                                PublicationName = NA,
+                                BookSeriesTitle = NA,
+                                Language = NA,
+                                DocumentType = NA,
+                                ConferenceTitle = NA,
+                                ConferenceDate = NA,
+                                ConferenceLocation = NA,
+                                ConferenceSponsors = NA,
+                                AuthorKeywords = NA,
+                                SubjectCategory = NA,
+                                TimesCited = NA,
+                                Abstract = NA,
+                                DOI = NA,
+                                Origin = "reference",
+                                stringsAsFactors = FALSE)
+
+    index <- duplicated(citation_nodes$Id)
+    citation_nodes <- citation_nodes[!index, ]
+    return(citation_nodes)
+}
+
+#' Helper function for extracting citation network nodes from literature data
+#' @param df A data frame containing the literature data
+#' @return A data frame containing citation nodes from literature data
+get_literature_nodes <- function(df) {
+    literature_nodes <- subset(df,
+                              select = c(DOI,
+                              YearPublished,
+                              ReferenceString,
+                              id,
+                              PublicationType,
+                              AuthorFullName,
+                              DocumentTitle,
+                              PublicationName,
+                              BookSeriesTitle,
+                              Language,
+                              DocumentType,
+                              ConferenceTitle,
+                              ConferenceDate,
+                              ConferenceLocation,
+                              ConferenceSponsors,
+                              AuthorKeywords,
+                              SubjectCategory,
+                              TimesCited,
+                              Abstract,
+                              DOI))
+
+    names(literature_nodes)[c(1, 3, 20)] <- c("Id",
+                                            "FullReference",
+                                            "DOI")
+    index <- literature_nodes$Id == ""
+    literature_nodes$Id[index] <- literature_nodes$FullReference[index]
+    literature_nodes$Origin <- "literature"
+
+    index <- duplicated(literature_nodes)
+    literature_nodes <- literature_nodes[!index, ]
+    return(literature_nodes)
+}
+
+#' Extract nodes for a citation network from literature data
+#' @param df A data frame containing literature data
+#' @param reference_list A data frame containing reference list
+#' @return A data frame containing nodes for a citation network
+get_citation_nodes <- function(df, reference_list) {
+    citation_nodes <- get_reference_nodes(reference_list)
+    literature_nodes <- get_literature_nodes(df)
+
+    # Remove reference nodes that appear also in literature data
+    citation_nodes <- citation_nodes[!(citation_nodes$Id %in%
+                                          literature_nodes$Id), ]
+
+    citation_nodes <- rbind(literature_nodes, citation_nodes)
+    citation_nodes$Label <- citation_nodes$FullReference
+
+    index <- duplicated(citation_nodes)
+    citation_nodes <- citation_nodes[!index, ]
+    return(citation_nodes)
+}
+
+#' Extract edges for a citation network from reference list
+#' @param reference_list A data frame containing reference list
+#' @return A data frame containing edges for a citation network
+get_citation_edges <- function(reference_list) {
+    citation_edges <- data.frame(Source = reference_list$DOI,
+                                Target = reference_list$Reference,
+                                id = reference_list$id,
+                                YearPublished = reference_list$YearPublished,
+                                DocumentTitle = reference_list$DocumentTitle,
+                                stringsAsFactors = FALSE)
+    no_source <- citation_edges$Source == ""
+    no_target <- is.na(citation_edges$Target)
+    citation_edges$Source[no_source] <- reference_list$ReferenceString[no_source]
+    citation_edges$Target[no_target] <- reference_list$FullReference[no_target]
+
+    return(citation_edges)
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+

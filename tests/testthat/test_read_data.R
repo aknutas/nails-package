@@ -1,8 +1,8 @@
 library(nails)
 context("Reading data")
 
-load("data/column_names.RData")
 load("data/fieldtags.RData")
+load("data/column_names.RData")
 
 test_that("single txt-file is read correctly, fix_names = TRUE", {
     df <- read_wos_txt("data/crowdsourcing.txt", fix_names = TRUE)
