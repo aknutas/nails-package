@@ -1,4 +1,5 @@
 # nails-package
+[![Travis-CI Build Status](https://travis-ci.org/aknutas/nails-package.svg?branch=master)](https://travis-ci.org/aknutas/nails-package)
 
 **Network Analysis Interface for Literature Studies; R package version**  
 by _Juho Salminen, Antti Knutas and Arash Hajikhani_  
@@ -24,12 +25,11 @@ If you use the software in your scientific work, please consider citing us.
 
 How to Use
 ----
-
 To be added. (once the R package is completed)
 
 Requirements
 ----
-For now the project verifiably works on R version 3.3.3 and RStudio 1.0.136.
+For now the project verifiably works on R version 3.4.0.
 
 You need the following R packages (tested 13.3.2017): splitstackshape, reshape, plyr, stringr, tm, SnowballC, lda, LDAvis, igraph
 
