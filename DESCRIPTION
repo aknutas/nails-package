@@ -1,12 +1,11 @@
 Package: nails
 Type: Package
-Title: What the Package Does (Title Case)
+Title: Network Analysis Interface for Literature Studies
 Version: 0.1.0
-Author: Who wrote it
-Maintainer: The package maintainer <yourself@somewhere.net>
-Description: More about what it does (maybe more than one line)
-    Use four spaces when indenting paragraphs within the Description.
-License: What license is it under?
+Author: Juho Salminen, Antti Knutas and Arash Hajikhani
+Maintainer: To Be Decided <yourself@somewhere.net>
+Description: This R package provides tools for performing Social Network Analysis (SNA) on citation data. This version is meant to use for R programmers. A general use version to be executed in RStudio is available at the second repository in the alternative repository https://github.com/aknutas/nails. See more information at http://aknutas.github.io/nails/.
+License: GPLv3
 Encoding: UTF-8
 LazyData: true
 Suggests: testthat
