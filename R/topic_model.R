@@ -77,14 +77,13 @@ select_optimal_k <- function(data) {
 #' model. This should have been created with the tm package's
 #' \code{DocumentTermMatrix} function.
 #'
-#' @seealso \link{LDAvis}.
 #' @export
 
 topicmodels_json_ldavis <- function(fitted, corpus, doc_term){
 
     # Find required quantities
-    phi <- posterior(fitted)$terms %>% as.matrix
-    theta <- posterior(fitted)$topics %>% as.matrix
+    phi <- topicmodels::posterior(fitted)$terms %>% as.matrix
+    theta <- topicmodels::posterior(fitted)$topics %>% as.matrix
     vocab <- colnames(phi)
     doc_length <- vector()
     for (i in 1:length(corpus)) {

@@ -22,6 +22,3 @@ model. This should have been created with the tm package's
 Convert the output of a topicmodels Latent Dirichlet Allocation to JSON
 for use with LDAvis
 }
-\seealso{
-\link{LDAvis}.
-}

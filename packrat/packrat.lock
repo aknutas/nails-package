@@ -49,24 +49,24 @@ Hash: fb672e20eb6f3010a3639f855d8ef6de
 Package: RSpectra
 Source: CRAN
 Version: 0.12-0
-Hash: 90226475f5f59b179d5475a06840c333
+Hash: 55c75ec335f4ba2b530b34ab4283dd5c
 Requires: Rcpp, RcppEigen
 
 Package: Rcpp
 Source: CRAN
-Version: 0.12.10
-Hash: 6cf65d0dd6a92f2d43c8d4805d33efe9
+Version: 0.12.11
+Hash: 2ee22f3b5e75dec80b1d8eca61cd96d8
 
 Package: RcppArmadillo
 Source: CRAN
 Version: 0.7.900.2.0
-Hash: e06ded3c367ee865fbdcd66c4a669158
+Hash: f574482c4f9ba4abd7bfe068d6739b99
 Requires: Rcpp
 
 Package: RcppEigen
 Source: CRAN
 Version: 0.3.3.3.0
-Hash: dfb1146881f067234c80251f2d2f9e1c
+Hash: 4d4c1b6fea87e53c781fed158b1c0d51
 Requires: Rcpp
 
 Package: RcppParallel
@@ -103,7 +103,7 @@ Hash: e3a02070cf705d3ad1c5af1635a515a3
 Package: bindrcpp
 Source: CRAN
 Version: 0.1
-Hash: 57498e6d551c8b99bfd980f34191867f
+Hash: 11b0937a09c0eae22da142702c7cf1e9
 Requires: Rcpp, bindr, plogr
 
 Package: brew
@@ -174,7 +174,7 @@ Requires: foreach, iterators
 Package: dplyr
 Source: CRAN
 Version: 0.7.0
-Hash: 26226e972227270b6e10a961d84907d7
+Hash: cc5586f018f942d4c85f3be9b112563d
 Requires: BH, R6, Rcpp, assertthat, bindrcpp, glue, magrittr,
     pkgconfig, plogr, rlang, tibble
 
@@ -324,7 +324,7 @@ Hash: fb19215402e2d9f1c7f803dcaa806fc2
 Package: plyr
 Source: CRAN
 Version: 1.8.4
-Hash: c9ddbdcfd74ff964e3e7d0b692a8dd70
+Hash: ec0683cf0ab5494db2eff1f31591624e
 Requires: Rcpp
 
 Package: praise
@@ -345,7 +345,7 @@ Hash: 69000b7dc41b09977dcf781f909d235c
 Package: quanteda
 Source: CRAN
 Version: 0.9.9-65
-Hash: fd211956fe4d3f6adc2d0d4bd9e47421
+Hash: 969497e9f281f3335255b3615b36728f
 Requires: RSpectra, Rcpp, RcppArmadillo, RcppParallel, SnowballC, XML,
     data.table, fastmatch, ggplot2, stringi, wordcloud, yaml
 
@@ -357,7 +357,7 @@ Hash: f9447c26b51b8c96f53720c5ff862c93
 Package: reshape2
 Source: CRAN
 Version: 1.4.2
-Hash: 790c06c11c84041b814139d731a872b9
+Hash: 01fa9a6b3ead377e4fac84af9f982df9
 Requires: Rcpp, plyr, stringr
 
 Package: rex
@@ -380,7 +380,7 @@ Requires: digest, pkgmaker, stringr
 Package: roxygen2
 Source: CRAN
 Version: 6.0.1
-Hash: 7a75b821e00443c60a239fa4070b4117
+Hash: 5ec390c33d6b969ceea50bf7456456f8
 Requires: R6, Rcpp, brew, commonmark, desc, digest, stringi, stringr,
     xml2
 
@@ -398,7 +398,7 @@ Hash: fd256f8bfb9a64cc35f98b0decb1a79f
 Package: scales
 Source: CRAN
 Version: 0.4.1
-Hash: 2d008b6e3fb9938255669ddf3c85f1f3
+Hash: 6368a3249d52d20b366191e9349690b6
 Requires: RColorBrewer, Rcpp, dichromat, labeling, munsell, plyr
 
 Package: slam
@@ -406,10 +406,16 @@ Source: CRAN
 Version: 0.1-40
 Hash: 72064713f4746f9bb8a0435c8bf61bd1
 
+Package: splitstackshape
+Source: CRAN
+Version: 1.4.2
+Hash: f03f3d67f69fa2f02f8c910da98e5b4e
+Requires: data.table
+
 Package: stm
 Source: CRAN
 Version: 1.2.2
-Hash: a9cac9ca1677c5b5f1963f03759e8fd9
+Hash: d04d6b3be862ccdf81e5a02937e0aa4d
 Requires: Rcpp, RcppArmadillo, data.table, glmnet, lda, matrixStats,
     quadprog, quanteda, slam, stringr
 
@@ -433,13 +439,13 @@ Requires: R6, crayon, digest, magrittr, praise
 Package: tibble
 Source: CRAN
 Version: 1.3.3
-Hash: a848553d9be39039a12001fb46447d06
+Hash: cff4362530fb71e27b84a02054bcb315
 Requires: Rcpp, rlang
 
 Package: tm
 Source: CRAN
 Version: 0.7-1
-Hash: dadc6a31ada460b976804c08088a7df8
+Hash: c5c3d7e5be6892a3f8cab83ce071e246
 Requires: BH, NLP, Rcpp, slam
 
 Package: topicmodels
@@ -461,13 +467,13 @@ Hash: 774eb7be9087cdc24b53b74e5359cfac
 Package: wordcloud
 Source: CRAN
 Version: 2.5
-Hash: 285738eaa6b3785382ca7df76f5a7af1
+Hash: ea1f721cdfee3799c61e8486878db2c0
 Requires: RColorBrewer, Rcpp, slam
 
 Package: xml2
 Source: CRAN
 Version: 1.1.1
-Hash: 19ad10ef8e73cb435eb49f9d5d259980
+Hash: 35dbee121bb8d76347677290ba1c6a06
 Requires: BH, Rcpp
 
 Package: xtable
