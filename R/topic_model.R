@@ -50,17 +50,18 @@ select_optimal_k <- function(data) {
     # Estimate number of topics; semantic coherence often good (default method spectral; best compromise and deterministic)
     # Seed set for consitent results
     set.seed(5707363)
-    topickest <- stm::searchK(out$documents, out$vocab, K = c(4:12), seed = 5707363)
+    topickest <- stm::searchK(out$documents, out$vocab, K = c(4:12), seed = 5707363, verbose = FALSE)
     semcohsK <- data.frame(topickest$results$K, topickest$results$semcoh)
     colnames(semcohsK)<- c("K","semcohs")
 
-    # Getting the K with highest semantic coherence, setting it as true
+    # Getting the K with highest semantic coherence, setting it as true in semcohsK DF
     bestpick <- semcohsK[which.max(semcohsK$semcohs),]
     bestK <- as.integer(bestpick$K)
+
     semcohsK$bestpick <- FALSE
     semcohsK$bestpick[which.max(semcohsK$semcohs)] <- TRUE
 
-    return(list(topickest = topickest, semcohvalues = semcohsK, bestk = bestpick))
+    return(list(topickest = topickest, semcohvalues = semcohsK, bestk = bestK))
 }
 
 # Function for converting topicmodels to LDAvis compatible
@@ -124,30 +125,6 @@ build_topicmodels_corpus <- function(textlist) {
     return(abstractCorpus)
 }
 
-#' Create topicmodels library DocumentTermMatrix
-#'
-#' @param abstractCorpus From build_topicmodels_corpus()
-#' @return Corpus for topicmodels
-
-build_topicmodels_DTM <- function(abstractCorpus) {
-    # Create DTM, minwordlength 3 (like above in stm)
-    abstractDTM <- tm::DocumentTermMatrix(abstractCorpus, control = list(minWordLength = 3))
-
-    # Cut documents with no words after filtering
-    rowTotals <- apply(abstractDTM , 1, sum)
-    # If empty rows, then remove documents from corpus and document-term matrix
-    empty.rows <- abstractDTM[rowTotals == 0, ]$dimnames[1][[1]]
-    if(!is.null(empty.rows)){
-        abstractCorpus <- abstractCorpus[-as.numeric(empty.rows)]
-        # doctablewt <- doctablewt[-as.numeric(empty.rows),]
-        # Disabled for now, not sure how well the shortcut works (TODO: Testing)
-        # abstractDTM <- abstractDTM[rowTotals> 0, ]
-        # A two-pass cludge, possibly could be replaced by row abstractDTM <- abstractDTM[rowTotals> 0, ]
-        # Enabling a second pass to prevent a discrepancy between corpus, doclist and DTM
-        abstractDTM <- tm::DocumentTermMatrix(abstractCorpus, control = list(minWordLength = 3))
-    }
-}
-
 #' Create a topicmodel from WoS library data frame
 #'
 #' @param literature Cleaned and processed literature dataframe
@@ -168,15 +145,21 @@ build_topicmodel_from_literature <- function(literature, K) {
         K <- k_analysis$bestk
     }
 
-    # Build corpus and DTM
-    corpus <- build_topicmodels_corpus(data$textlist)
-    abstractDTM <- build_topicmodels_DTM(corpus)
+    # Build corpus for DTM generation
+    abstractCorpus <- build_topicmodels_corpus(data$textlist)
 
-    # If empty rows after DTM processing, remove from doctablewt
+    # Create DTM, minwordlength 3 (like above in stm)
+    abstractDTM <- tm::DocumentTermMatrix(abstractCorpus, control = list(minWordLength = 3))
+
+    # Cut documents with no words after filtering
     rowTotals <- apply(abstractDTM , 1, sum)
+    # If empty rows, then remove documents from corpus and document-term matrix
     empty.rows <- abstractDTM[rowTotals == 0, ]$dimnames[1][[1]]
     if(!is.null(empty.rows)){
+        abstractCorpus <- abstractCorpus[-as.numeric(empty.rows)]
         data$doctablewt <- data$doctablewt[-as.numeric(empty.rows),]
+        # Enabling a second pass to prevent a discrepancy between corpus, doclist and DTM
+        abstractDTM <- tm::DocumentTermMatrix(abstractCorpus, control = list(minWordLength = 3))
     }
 
     # Parameters
@@ -184,7 +167,7 @@ build_topicmodel_from_literature <- function(literature, K) {
     burnin <- 4000
     iter <- 2000 # default value
     thin <- 500
-    seed <- 5707363 # random seed
+    seed <- c(5707363, 3217518, 3470922, 1400098) # random seed
     nstart <- 4 # random starts for model evaluation, best is picked (increase from 1 to 4-6 for final analysis)
     best <- TRUE
 
@@ -195,13 +178,13 @@ build_topicmodel_from_literature <- function(literature, K) {
                                                             thin=thin))
 
     # Terms for each topic
-    topickeywords <- terms(fit, 10)
+    topickeywords <- topicmodels::terms(fit, 10)
 
     # Theta topic probabilities for each document
-    thetaDF <- as.data.frame(posterior(fit)$topics)
+    thetaDF <- as.data.frame(topicmodels::posterior(fit)$topics)
     # Add top topics for each document, add rowids for future reference
     thetaDF$toptopic <- colnames(thetaDF)[max.col(thetaDF,ties.method="first")]
-    thetaDF$topicmodelrowids <- doctablewt$topicmodelrowids
+    thetaDF$topicmodelrowids <- data$doctablewt$topicmodelrowids
 
-    return(list(fit = fit, thetadf = thetaDF, doctablewt = doctablewt))
+    return(list(fit = fit, thetadf = thetaDF, doctablewt = data$doctablewt))
 }
