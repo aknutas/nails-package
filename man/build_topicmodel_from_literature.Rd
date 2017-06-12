@@ -4,7 +4,7 @@
 \alias{build_topicmodel_from_literature}
 \title{Create a topicmodel from WoS library data frame}
 \usage{
-build_topicmodel_from_literature(literature)
+build_topicmodel_from_literature(literature, K)
 }
 \arguments{
 \item{literature}{Cleaned and processed literature dataframe}

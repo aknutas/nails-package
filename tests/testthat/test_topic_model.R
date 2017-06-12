@@ -1,8 +1,8 @@
 library(nails)
 context("Building topic models")
 
-load("data/fieldtags.RData")
-load("data/column_names.RData")
+# Loads test data frame "sublit" into memory
+load("data/topicmodeltest_df.RData")
 
 test_that("Topicmodels input data gets cleaned properly", {
     # Not implemented yet

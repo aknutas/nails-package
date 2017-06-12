@@ -2,7 +2,8 @@
 % Please edit documentation in R/topic_model.R
 \name{preprocess_literature_for_topicmodeling}
 \alias{preprocess_literature_for_topicmodeling}
-\title{Estimates number of topics (K) using the stm library}
+\title{Preprocess literature file for topicmodeling
+Use for select_optimal_k or others that take the "data$textlist" object.}
 \usage{
 preprocess_literature_for_topicmodeling(literature)
 }
@@ -13,5 +14,6 @@ preprocess_literature_for_topicmodeling(literature)
 A list with vector of words (textlist) and data frame with only abstracts, topics and rowids (doctablewt)
 }
 \description{
-Estimates number of topics (K) using the stm library
+Preprocess literature file for topicmodeling
+Use for select_optimal_k or others that take the "data$textlist" object.
 }

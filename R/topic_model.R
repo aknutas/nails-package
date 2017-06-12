@@ -1,7 +1,11 @@
-#' Estimates number of topics (K) using the stm library
+#' Preprocess literature file for topicmodeling
+#' Use for select_optimal_k or others that take the "data$textlist" object.
 #'
 #' @param literature The cleaned and processed literature dataframe
 #' @return A list with vector of words (textlist) and data frame with only abstracts, topics and rowids (doctablewt)
+#'
+#' @export
+
 preprocess_literature_for_topicmodeling <- function(literature) {
     if(missing(literature))
         stop("Need valid literature input")
@@ -23,26 +27,30 @@ preprocess_literature_for_topicmodeling <- function(literature) {
 #'
 #' @param textlist Vector of processed words
 #' @return Corpus for stm
+
 build_stm_corpus <- function(textlist) {
     # Prepare documents into corpus
     # Also processes the following by default:
     # Lowercases, removes SMART stopwords, removes numbers, removes punctuation, wordlength min is 3
-    processed <- textProcessor(textlist, stem = TRUE)
-    out <- prepDocuments(processed$documents, processed$vocab)
+    processed <- stm::textProcessor(textlist, stem = TRUE)
+    out <- stm::prepDocuments(processed$documents, processed$vocab)
     return(out)
 }
 
 #' Estimates number of topics (K) using the stm library
 #'
 #' @param data Data from preprocess_literature_for_topicmodeling()
-#' @return A list with topic estimation from stm lib (topicest), semantic coherence values (semcohvalues) and estimate of best K of topics (bestk)
+#' @return A list with topic estimation from stm lib (topickest), semantic coherence values (semcohvalues) and estimate of best K of topics (bestk)
+#'
+#' @export
+
 select_optimal_k <- function(data) {
     out <- build_stm_corpus(data$textlist)
 
     # Estimate number of topics; semantic coherence often good (default method spectral; best compromise and deterministic)
     # Seed set for consitent results
     set.seed(5707363)
-    topickest <- searchK(out$documents, out$vocab, K = c(4:12), seed = 5707363)
+    topickest <- stm::searchK(out$documents, out$vocab, K = c(4:12), seed = 5707363)
     semcohsK <- data.frame(topickest$results$K, topickest$results$semcoh)
     colnames(semcohsK)<- c("K","semcohs")
 
@@ -52,7 +60,7 @@ select_optimal_k <- function(data) {
     semcohsK$bestpick <- FALSE
     semcohsK$bestpick[which.max(semcohsK$semcohs)] <- TRUE
 
-    return(list(topicest = topicest, semcohvalues = semcohsK, bestk = bestpick))
+    return(list(topickest = topickest, semcohvalues = semcohsK, bestk = bestpick))
 }
 
 # Function for converting topicmodels to LDAvis compatible
@@ -100,17 +108,18 @@ topicmodels_json_ldavis <- function(fitted, corpus, doc_term){
 #'
 #' @param textlist Vector of texts
 #' @return Corpus for topicmodels
+
 build_topicmodels_corpus <- function(textlist) {
     # Create corpus
-    abstractCorpus <- Corpus(VectorSource(textlist))
+    abstractCorpus <- tm::Corpus(tm::VectorSource(textlist))
 
     # Preprocess by lowercasing, removing punctuation, numbers, whitespace and stopwords, and finally stemming
-    abstractCorpus <- tm_map(abstractCorpus, content_transformer(tolower))
-    abstractCorpus <- tm_map(abstractCorpus, removePunctuation)
-    abstractCorpus <- tm_map(abstractCorpus, removeNumbers)
-    abstractCorpus <- tm_map(abstractCorpus, stripWhitespace)
-    abstractCorpus <- tm_map(abstractCorpus, removeWords, stopwords("SMART"))
-    abstractCorpus <- tm_map(abstractCorpus, stemDocument)
+    abstractCorpus <- tm::tm_map(abstractCorpus, tm::content_transformer(tolower))
+    abstractCorpus <- tm::tm_map(abstractCorpus, tm::removePunctuation)
+    abstractCorpus <- tm::tm_map(abstractCorpus, tm::removeNumbers)
+    abstractCorpus <- tm::tm_map(abstractCorpus, tm::stripWhitespace)
+    abstractCorpus <- tm::tm_map(abstractCorpus, tm::removeWords, tm::stopwords("SMART"))
+    abstractCorpus <- tm::tm_map(abstractCorpus, tm::stemDocument)
 
     return(abstractCorpus)
 }
@@ -119,6 +128,7 @@ build_topicmodels_corpus <- function(textlist) {
 #'
 #' @param abstractCorpus From build_topicmodels_corpus()
 #' @return Corpus for topicmodels
+
 build_topicmodels_DTM <- function(abstractCorpus) {
     # Create DTM, minwordlength 3 (like above in stm)
     abstractDTM <- tm::DocumentTermMatrix(abstractCorpus, control = list(minWordLength = 3))
@@ -143,7 +153,10 @@ build_topicmodels_DTM <- function(abstractCorpus) {
 #' @param literature Cleaned and processed literature dataframe
 #' @param K Predefined K. If null, auto select K with stm library.
 #' @return List with topicmodels fit (fit), thetaDF distributions (thetadf) and subset of literature columns with topicmodel columns added (doctablewt)
-build_topicmodel_from_literature <- function(literature) {
+#'
+#' @export
+
+build_topicmodel_from_literature <- function(literature, K) {
     if(missing(literature))
         stop("Need valid literature data frame input")
 
@@ -160,6 +173,7 @@ build_topicmodel_from_literature <- function(literature) {
     abstractDTM <- build_topicmodels_DTM(corpus)
 
     # If empty rows after DTM processing, remove from doctablewt
+    rowTotals <- apply(abstractDTM , 1, sum)
     empty.rows <- abstractDTM[rowTotals == 0, ]$dimnames[1][[1]]
     if(!is.null(empty.rows)){
         data$doctablewt <- data$doctablewt[-as.numeric(empty.rows),]
@@ -175,7 +189,7 @@ build_topicmodel_from_literature <- function(literature) {
     best <- TRUE
 
     # Latent Dirichlet Allocation
-    fit <- LDA(abstractDTM, K, method="Gibbs", control=list(nstart=nstart,
+    fit <- topicmodels::LDA(abstractDTM, K, method="Gibbs", control=list(nstart=nstart,
                                                             seed=seed, best=best,
                                                             burnin=burnin, iter=iter,
                                                             thin=thin))

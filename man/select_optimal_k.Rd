@@ -10,7 +10,7 @@ select_optimal_k(data)
 \item{data}{Data from preprocess_literature_for_topicmodeling()}
 }
 \value{
-A list with topic estimation from stm lib (topicest), semantic coherence values (semcohvalues) and estimate of best K of topics (bestk)
+A list with topic estimation from stm lib (topickest), semantic coherence values (semcohvalues) and estimate of best K of topics (bestk)
 }
 \description{
 Estimates number of topics (K) using the stm library
