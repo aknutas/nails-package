@@ -8,6 +8,8 @@ addons:
   apt:
     packages:
     - gsl-bin
+    - libgsl0ldbl
+    - libgsl0-dev
 
 r_packages:
   - covr
