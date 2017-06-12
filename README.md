@@ -29,9 +29,7 @@ To be added. (once the R package is completed)
 
 Requirements
 ----
-For now the project verifiably works on R version 3.4.0.
-
-You need the following R packages (tested 13.3.2017): splitstackshape, reshape, plyr, stringr, tm, SnowballC, lda, LDAvis, igraph
+For now the project verifiably works on R version 3.4.0. See package requirements in DESCRIPTION and packrat/packrat.lock files.
 
 We are open source and free software
 ----
