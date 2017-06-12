@@ -121,6 +121,12 @@ Source: CRAN
 Version: 1.2
 Hash: 1290583b9d16fb60322126a8698fb729
 
+Package: covr
+Source: CRAN
+Version: 2.2.2
+Hash: 4b7aa8c6847719b64201de2562353c3f
+Requires: crayon, httr, jsonlite, rex, withr
+
 Package: crayon
 Source: CRAN
 Version: 1.3.2
@@ -353,6 +359,12 @@ Source: CRAN
 Version: 1.4.2
 Hash: 790c06c11c84041b814139d731a872b9
 Requires: Rcpp, plyr, stringr
+
+Package: rex
+Source: CRAN
+Version: 1.1.1
+Hash: 69e208c6283398d235e507a658ba8079
+Requires: lazyeval, magrittr
 
 Package: rlang
 Source: CRAN
