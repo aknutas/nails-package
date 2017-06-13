@@ -90,10 +90,22 @@ Source: CRAN
 Version: 0.2.0
 Hash: e8805df54c65ac96d50235c44a82615c
 
+Package: backports
+Source: CRAN
+Version: 1.1.0
+
+Package: brew
+Source: CRAN
+Version: 1.0-6
+
 Package: colorspace
 Source: CRAN
 Version: 1.3-2
 Hash: 0bf8618b585fa98eb23414cd3ab95118
+
+Package: commonmark
+Source: CRAN
+Version: 1.2
 
 Package: crayon
 Source: CRAN
@@ -104,6 +116,11 @@ Package: data.table
 Source: CRAN
 Version: 1.10.4
 Hash: 2c7c47ccb40d01c7b214c8eff818108d
+
+Package: desc
+Source: CRAN
+Version: 1.1.0
+Requires: R6, assertthat, crayon, rprojroot
 
 Package: dichromat
 Source: CRAN
@@ -273,6 +290,18 @@ Version: 1.2.4
 Hash: 4db0661fe95ab6eb3d6339495bf22003
 Requires: digest, pkgmaker, stringr
 
+Package: roxygen2
+Source: CRAN
+Version: 6.0.1
+Hash: 5ec390c33d6b969ceea50bf7456456f8
+Requires: R6, Rcpp, brew, commonmark, desc, digest, stringi, stringr,
+    xml2
+
+Package: rprojroot
+Source: CRAN
+Version: 1.2
+Requires: backports
+
 Package: scales
 Source: CRAN
 Version: 0.4.1
@@ -337,6 +366,11 @@ Source: CRAN
 Version: 2.5
 Hash: ea1f721cdfee3799c61e8486878db2c0
 Requires: RColorBrewer, Rcpp, slam
+
+Package: xml2
+Source: CRAN
+Version: 1.1.1
+Requires: BH, Rcpp
 
 Package: xtable
 Source: CRAN
