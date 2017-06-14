@@ -2,7 +2,7 @@ library(nails)
 context("Building topic models")
 
 # Loads test data frame "sublit" into memory
-load("data/topicmodeltest_df.RData")
+load(file.path("test_data/topicmodeltest_df.RData"))
 
 test_that("Topicmodels input data gets cleaned properly", {
     data <- nails::preprocess_literature_for_topicmodeling(sublit)
