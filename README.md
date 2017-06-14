@@ -1,5 +1,5 @@
 # nails-package
-[![Travis-CI Build Status](https://travis-ci.org/aknutas/nails-package.svg?branch=master)](https://travis-ci.org/aknutas/nails-package)
+[![Travis-CI Build Status](https://travis-ci.org/aknutas/nails-package.svg?branch=master)](https://travis-ci.org/aknutas/nails-package) [![codecov](https://codecov.io/gh/aknutas/nails-package/branch/master/graph/badge.svg)](https://codecov.io/gh/aknutas/nails-package)
 
 **Network Analysis Interface for Literature Studies; R package version**  
 by _Juho Salminen, Antti Knutas and Arash Hajikhani_  
