@@ -1,6 +1,6 @@
 PackratFormat: 1.4
 PackratVersion: 0.4.8.1
-RVersion: 3.4.0
+RVersion: 3.3.3
 Repos: CRAN=https://cran.rstudio.com/
 
 Package: BH
@@ -82,8 +82,8 @@ Hash: 6f14c834eea7672f25b83d9ba35b85ca
 
 Package: XML
 Source: CRAN
-Version: 3.98-1.7
-Hash: fd1bf3df333ac6d5ad6ce2688c6080aa
+Version: 3.98-1.9
+Hash: 02079c4025bbfa0f63400cc0bb414952
 
 Package: assertthat
 Source: CRAN
@@ -93,10 +93,12 @@ Hash: e8805df54c65ac96d50235c44a82615c
 Package: backports
 Source: CRAN
 Version: 1.1.0
+Hash: 3f754426ca2b7dbbf63951fe5075373b
 
 Package: brew
 Source: CRAN
 Version: 1.0-6
+Hash: 931f9972deae0f205e1c78a51f33149b
 
 Package: colorspace
 Source: CRAN
@@ -106,6 +108,7 @@ Hash: 0bf8618b585fa98eb23414cd3ab95118
 Package: commonmark
 Source: CRAN
 Version: 1.2
+Hash: 1290583b9d16fb60322126a8698fb729
 
 Package: crayon
 Source: CRAN
@@ -120,6 +123,7 @@ Hash: 2c7c47ccb40d01c7b214c8eff818108d
 Package: desc
 Source: CRAN
 Version: 1.1.0
+Hash: 346d3477f87b89692dd1379eaed1a1be
 Requires: R6, assertthat, crayon, rprojroot
 
 Package: dichromat
@@ -186,7 +190,7 @@ Requires: NMF, irlba, magrittr
 Package: irlba
 Source: CRAN
 Version: 2.2.1
-Hash: 9a77571d304ef3473cfef7effdae93b5
+Hash: 129c56a5ab6def05c411673cabe04054
 
 Package: iterators
 Source: CRAN
@@ -300,6 +304,7 @@ Requires: R6, Rcpp, brew, commonmark, desc, digest, stringi, stringr,
 Package: rprojroot
 Source: CRAN
 Version: 1.2
+Hash: fdcac51a7f47decd60556ceefc3c26b1
 Requires: backports
 
 Package: scales
@@ -370,6 +375,7 @@ Requires: RColorBrewer, Rcpp, slam
 Package: xml2
 Source: CRAN
 Version: 1.1.1
+Hash: 35dbee121bb8d76347677290ba1c6a06
 Requires: BH, Rcpp
 
 Package: xtable
