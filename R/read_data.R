@@ -7,10 +7,14 @@
 read_wos_folder <- function(filepath, fix_names = TRUE) {
     all_files <- list.files(filepath, pattern = ".txt", full.names = TRUE)
     df <- plyr::ldply(all_files, read.delim2, fileEncoding="UTF-16",
-               quote="", row.names=NULL, stringsAsFactors = FALSE)
-    df_names <- names(df)[2:length(names(df))]
-    df <- df[, 1:(ncol(df) - 1)]
-    names(df) <- df_names
+               quote="", row.names=NULL,
+               header = FALSE,
+               stringsAsFactors = FALSE)
+    colindex <- !is.na(df[1, ])
+    df <- df[!duplicated(df), ]
+    data_names <- as.character(df[1, colindex])
+    df <- df[-1, colindex]
+    names(df) <- data_names
     if(fix_names) {
         names(df) <- fix_column_names(names(df))
     }
@@ -25,10 +29,13 @@ read_wos_folder <- function(filepath, fix_names = TRUE) {
 #' @return A data frame
 read_wos_txt <- function(filepath, fix_names = TRUE) {
     df <- read.delim2(filepath, fileEncoding="UTF-16",
-                      quote="", row.names=NULL, stringsAsFactors = FALSE)
-    df_names <- names(df)[2:length(names(df))]
-    df <- df[, 1:(ncol(df) - 1)]
-    names(df) <- df_names
+                      quote="", row.names=NULL,
+                      header = FALSE,
+                      stringsAsFactors = FALSE)
+    colindex <- !is.na(df[1, ])
+    data_names <- as.character(df[1, colindex])
+    df <- df[-1, colindex]
+    names(df) <- data_names
     if (fix_names) {
         names(df) <- fix_column_names(names(df))
     }

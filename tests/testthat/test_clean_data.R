@@ -30,6 +30,7 @@ test_that("specified columns are changed to uppercase", {
     expect_equal(df_test, change_uppercase(df, c("a", "b")))
 })
 
-
-
+test_that("removing whitespace works", {
+    expect_equal("hello world !", trim("  hello world ! "))
+})
 
