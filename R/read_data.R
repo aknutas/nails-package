@@ -63,10 +63,10 @@ fix_column_names <- function(column_names) {
 #' @param df A data frame
 #' @return An integer from 1 to 3
 check_data <- function(df) {
-    if (isTRUE(all.equal(names(df), original_fieldtags))) {
+    if (length(names(df)[1]) == 2) {
         return(1)
     }
-    if (isTRUE(all.equal(names(df), fixed_fieldtags))) {
+    if (length(names(df)[1]) > 2) {
         return(2)
     } else {
         return(3)
