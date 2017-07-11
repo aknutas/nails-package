@@ -425,10 +425,10 @@ get_author_edges <- function(df) {
 
     # Subset data. Use this to select columns to include in network data
     edges <- subset(edges,
-                    select = c("Source",          # Don't change. Gephi need this!
-                               "Target",          # Don't change. Gephi need this!
-                               "Type",            # Don't change. Gephi need this!
-                               "id",              # Don't change. Gephi need this!
+                    select = c("Source",          # Don't change. Gephi needs this!
+                               "Target",          # Don't change. Gephi needs this!
+                               "Type",            # Don't change. Gephi needs this!
+                               "id",              # Don't change. Gephi needs this!
                                "YearPublished",   # This and below rows can be changed.
                                "DocumentTitle",
                                "DOI",
