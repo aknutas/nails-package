@@ -46,15 +46,24 @@ read_wos_txt <- function(filepath, fix_names = TRUE) {
 #'
 #' @param column_names Column names
 #' @return Fixed column names
-fix_column_names <- function(column_names) {
+fix_column_names <- function(column_names, fix_format = TRUE) {
     fields <- fieldtags$field[match(column_names, fieldtags$tag)]
     fields[is.na(fields)] <- column_names[is.na(fields)]
     fields <- gsub(" ", "", fields)
 
-    fields[fields == "KeywordsPlus\xfc\xbe\x8e\x86\x84\xbc"] <- "KeywordsPlus"
-    fields[fields == "PublicationType(conference,book,journal,bookinseries,orpatent)"] <- "PublicationType"
-    fields[fields == "29-CharacterSourceAbbreviation"] <- "SourceAbbreviation"
-    fields[fields == "DigitalObjectIdentifier(DOI)" ] <- "DOI"
+    if (fix_format) {
+        fields[fields == "KeywordsPlus®"] <- "KeywordsPlus"
+        fields[fields == "PublicationType(J=Journal;B=Book;S=Series)"] <- "PublicationType"
+        fields[fields == "29-CharacterSourceAbbreviation"] <- "SourceAbbreviation"
+        fields[fields == "DigitalObjectIdentifier(DOI)"] <- "DOI"
+        fields[fields == "ElectronicInternationalStandardSerialNumber(eISSN)"] <- "eISSN"
+
+        fields[fields == "ORCIDIdentifier(OpenResearcherandContributorID)"] <- "ORCID"
+        fields[fields == "TotalTimesCited(WebofScienceCore,BIOSISCitationIndex,andChinese\nScienceCitationDatabase)"] <- "TimesCited"
+        fields[fields == "UsageCount(Last180Days)"] <- "UsageCountLast180Days"
+        fields[fields == "UsageCount(Since2013)"] <- "UsageCountSince2013"
+        fields[fields == "BookDigitalObjectIdentifier(DOI)"] <- "BookDOI"
+    }
 
     return(fields)
 }
