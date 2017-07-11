@@ -66,6 +66,7 @@ clean_wos_data <- function(df) {
     df$CitedReferences <- gsub("DOI DOI", "DOI", df$CitedReferences)
     df$YearPublished <- as.numeric(df$YearPublished)
     df$TimesCited <- as.numeric(df$TimesCited)
+    df$CitedReferenceCount <- as.numeric(df$CitedReferenceCount)
 
     df$Location <- sapply(df$AuthorAddress, get_location)
 
@@ -174,24 +175,22 @@ get_location <- function(x) {
 arrange_by <- function(df, selection, sep = ";") {
     # Check data
 
-    # Subset data
-    # POSSIBLE OPTIMIZATION: remove this step!
-    arranged_df <- subset(df, select = c(selection, "id"))
     # Remove NAs
-    arranged_df <- arranged_df[!is.na(arranged_df[, selection]), ]
+    arranged_df <- df[!is.na(df[, selection]), ]
     # Create data frame: selection split by split, each element on a new row,
     # id copied to new rows
     arranged_df <- splitstackshape::cSplit(arranged_df,
                                          splitCols = selection,
                                          sep = sep, direction = "long")
-    temp <- quote(selection)
-    arranged_df <- arranged_df[,  eval(temp):= as.character(get(selection))]
+    # Transform back to a data frame
+    arranged_df <- as.data.frame(arranged_df)
+
+    # Change factor back to character
+    arranged_df[, selection] <- as.character(arranged_df[, selection])
+
     # Removing rows with NA as author name created in previous step
     arranged_df <- arranged_df[!is.na(arranged_df[, selection]), ]
-    # Merge the rest of the data by id
-    arranged_df <- merge(arranged_df,
-                       df[, !(names(df) %in% c(selection))],
-                       by = "id")
+
     return(arranged_df)
 }
 

@@ -44,6 +44,7 @@ get_reference_nodes <- function(reference_list) {
 
     index <- duplicated(citation_nodes$Id)
     citation_nodes <- citation_nodes[!index, ]
+    citation_nodes$Label <- citation_nodes$FullReference
     return(citation_nodes)
 }
 
@@ -82,6 +83,8 @@ get_literature_nodes <- function(df) {
 
     index <- duplicated(literature_nodes)
     literature_nodes <- literature_nodes[!index, ]
+    literature_nodes$Label <- literature_nodes$FullReference
+
     return(literature_nodes)
 }
 
@@ -97,8 +100,7 @@ get_citation_nodes <- function(df, reference_list) {
     citation_nodes <- citation_nodes[!(citation_nodes$Id %in%
                                            literature_nodes$Id), ]
 
-    citation_nodes <- rbind(literature_nodes, citation_nodes)
-    citation_nodes$Label <- citation_nodes$FullReference
+    citation_nodes <- rbind(citation_nodes, literature_nodes)
 
     index <- duplicated(citation_nodes)
     citation_nodes <- citation_nodes[!index, ]
