@@ -63,6 +63,7 @@ fix_column_names <- function(column_names, fix_format = TRUE) {
         fields[fields == "UsageCount(Last180Days)"] <- "UsageCountLast180Days"
         fields[fields == "UsageCount(Since2013)"] <- "UsageCountSince2013"
         fields[fields == "BookDigitalObjectIdentifier(DOI)"] <- "BookDOI"
+        fields[fields == "E-mailAddress" ] <- "EmailAddress"
     }
 
     return(fields)
