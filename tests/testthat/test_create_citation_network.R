@@ -48,6 +48,12 @@ nodes_colnames <- c("Id",
                     "Origin",
                     "Label")
 
+edges_id <- c(rep(3, 43), rep(36, 66), rep(100, 40))
+edges_DocumentTitle <- c(rep(df$DocumentTitle[1], 43),
+                         rep(df$DocumentTitle[2], 66),
+                         rep(df$DocumentTitle[3], 40))
+
+
 test_that("get_reference_list works", {
     rl <- get_reference_list(df)
     # Number of rows
@@ -145,4 +151,22 @@ test_that("get_citation_edges works", {
     edges <- get_citation_edges(rl)
     # Number of rows
     expect_equal(nrow(edges), number_of_rows)
+    # Source
+    expect_equal(edges$Source[1:43], rep(df$DOI[1], 43))
+    expect_equal(edges$Source[44:109], rep(df$DOI[2], 66))
+    expect_equal(edges$Source[110:149], rep(df$DOI[3], 40))
+    # Target
+    expect_equal(edges$Target[1], DOI_1)
+    expect_equal(edges$Target[43], DOI_43)
+    expect_equal(edges$Target[44], DOI_44)
+    expect_equal(edges$Target[148], DOI_148)
+    # id
+    expect_equal(edges$id, edges_id)
+    # Year Published
+    expect_equal(edges$YearPublished, rep(2017, nrow(edges)))
+    # Document title
+    expect_equal(edges$DocumentTitle, edges_DocumentTitle)
+    # NAs
+    expect_equal(sum(is.na(edges$Source)), 0)
+    expect_equal(sum(is.na(edges$Target)), 0)
 })
