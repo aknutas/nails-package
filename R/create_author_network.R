@@ -31,8 +31,8 @@ get_author_nodes <- function(df) {
                                  Freq,
                                  TotalTimesCited,
                                  AuthorAddress,
-                                 ReprintAddress,
-                                 # E-mailAddress,   FIX THIS COLNAME!
+                                 # ReprintAddress, probably not useful
+                                 EmailAddress,
                                  Location))
 
     # Remove duplicates
