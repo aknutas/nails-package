@@ -22,9 +22,14 @@ get_author_nodes <- function(df) {
                      by.y = "Var1",
                      all.x = TRUE)
 
+    # Extract author address
+    authors$AuthorAddress <- apply(authors, 1, get_address)
+
+    # Fix column names and add Label column
     names(authors)[names(authors) == "AuthorFullName"] <- "Id"
     authors$Label <- authors$Id
 
+    # Drop unnecessary columns
     authors <- subset(authors,
                       select = c(Id,
                                  Label,
@@ -37,16 +42,41 @@ get_author_nodes <- function(df) {
 
     # Remove duplicates
     authors <- authors[!duplicated(authors$Id), ]
+
     return(authors)
 }
 
+#' Helper function for extracting author address
+#' @param df A row from a data frame
+#' @return A string containing author's address, if one exists
+get_address <- function(df) {
+    # Author name for the current row
+    author_name <- df["AuthorFullName"]
 
+    # Extract and clean names from AuthorAddress field
+    name_list <- unlist(stringr::str_extract_all(df["AuthorAddress"],
+                                         "\\[.*?\\]"))
+    name_list <- gsub("\\[", "", name_list)     # Remove brackets
+    name_list <- gsub("\\]", "", name_list)     # Remove brackets
+    name_list <- strsplit(name_list, ";")       # Split list of names
+    name_list <- lapply(name_list, trim)        # Remove leading & trailing whitespace
+    name_list <- lapply(name_list, toupper)     # Change to uppercase
 
+    # Extract and clean addresses
+    address_list <- gsub("\\[.*?\\]", "", df["AuthorAddress"])
+    address_list <- unlist(strsplit(address_list, ";"))     # Split list of addresses
+    address_list <- trim(address_list)          # Remove leading & trailing whitespace
 
+    # Match author name to correct address
+    address <- NA
+    for (i in 1:length(name_list)) {
+        if (author_name %in% name_list[[i]]) {
+            address <- address_list[i]
+        }
+    }
+    return(address)
+}
 
-
-
-# Helper functions for extracting edges
 
 #' Helper function for pasting two nodes together
 #' @param node A list containing two author network nodes
@@ -60,10 +90,13 @@ collapse_edge <- function(edge){
 #' @return A list of edges
 create_edges <- function(x){
     edges <- strsplit(x, ';')
+
+    # Create edges only if more than 1 author
     if(length(unlist(edges)) > 1){
-        edges <- combn(unlist(edges), 2, simplify = F)
-        edges <- lapply(edges, collapse_edge)
+        edges <- combn(unlist(edges), 2, simplify = F)  # Get all author pairs
+        edges <- lapply(edges, collapse_edge)           # Simplify author pairs
     } else{edges <- NA}
+
     return(edges)
 }
 

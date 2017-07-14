@@ -16,14 +16,27 @@ test_that("single txt-file is read correctly, fix_names = FALSE", {
 })
 
 
-# test_that("txt-files in folder are read correctly, fix_names = TRUE", {
-#     df <- read_wos_folder(file.path("test_data"), fix_names = TRUE)
-#     expect_equal("data.frame", class(df))
-#     expect_equal(60, ncol(df))
-#     expect_equal(995, nrow(df))
-#     expect_equal(fields, names(df))
-# })
-#
+test_that("txt-files in folder are read correctly, fix_names = TRUE", {
+    df <- read_wos_folder(file.path("test_data"), fix_names = TRUE)
+    expect_equal("data.frame", class(df))
+    expect_equal(66, ncol(df))
+    expect_equal(600, nrow(df))
+})
+
+test_that("read_wos_data reads a file correctly", {
+    df <- read_wos_data(file.path("test_data/savedrecs-mactab.txt"))
+    expect_equal("data.frame", class(df))
+    expect_equal(66, ncol(df))
+    expect_equal(100, nrow(df))
+})
+
+test_that("read_wos_data reads a folder correctly", {
+    df <- read_wos_data(file.path("test_data"))
+    expect_equal("data.frame", class(df))
+    expect_equal(66, ncol(df))
+    expect_equal(600, nrow(df))
+})
+
 # test_that("txt-files in folder are read correctly, fix_names = FALSE", {
 #     df <- read_wos_folder(file.path("test_data"), fix_names = FALSE)
 #     expect_equal("data.frame", class(df))

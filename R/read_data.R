@@ -1,20 +1,28 @@
 
 #' Read all .txt-files downloaded from Web of Science within a folder.
-#'
 #' @param filepath Path to a folder
 #' @param fix_names Should field tags be changed to field names?
 #' @return A data frame
 read_wos_folder <- function(filepath, fix_names = TRUE) {
     all_files <- list.files(filepath, pattern = ".txt", full.names = TRUE)
+    data_sample <- read.delim2(all_files[1], fileEncoding = "UTF-16",
+                               quote = "", row.names=NULL,
+                               header = FALSE,
+                               stringsAsFactors = FALSE,
+                               nrows = 10)
+    colindex <- !is.na(data_sample[1, ])
+    data_names <- as.character(data_sample[1, colindex])
+
     df <- plyr::ldply(all_files, read.delim2, fileEncoding="UTF-16",
                quote="", row.names=NULL,
                header = FALSE,
-               stringsAsFactors = FALSE)
-    colindex <- !is.na(df[1, ])
-    df <- df[!duplicated(df), ]
-    data_names <- as.character(df[1, colindex])
-    df <- df[-1, colindex]
+               stringsAsFactors = FALSE,
+               skip = 1)
+
+    df <- df[, colindex]
     names(df) <- data_names
+    df <- df[!duplicated(df), ]
+
     if(fix_names) {
         names(df) <- fix_column_names(names(df))
     }
@@ -23,18 +31,25 @@ read_wos_folder <- function(filepath, fix_names = TRUE) {
 
 
 #' Read a .txt-file downloaded from Web of Science.
-#'
 #' @param filepath Path to a folder
 #' @param fix_names Should field tags be changed to field names?
 #' @return A data frame
 read_wos_txt <- function(filepath, fix_names = TRUE) {
+    data_sample <- read.delim2(filepath, fileEncoding = "UTF-16",
+                             quote = "", row.names=NULL,
+                             header = FALSE,
+                             stringsAsFactors = FALSE,
+                             nrows = 10)
+    colindex <- !is.na(data_sample[1, ])
+    data_names <- as.character(data_sample[1, colindex])
+
     df <- read.delim2(filepath, fileEncoding="UTF-16",
                       quote="", row.names=NULL,
                       header = FALSE,
-                      stringsAsFactors = FALSE)
-    colindex <- !is.na(df[1, ])
-    data_names <- as.character(df[1, colindex])
-    df <- df[-1, colindex]
+                      stringsAsFactors = FALSE,
+                      skip = 1)
+
+    df <- df[, colindex]
     names(df) <- data_names
     if (fix_names) {
         names(df) <- fix_column_names(names(df))
@@ -42,8 +57,22 @@ read_wos_txt <- function(filepath, fix_names = TRUE) {
     return(df)
 }
 
+#' Read file or folder of files downloaded from Web of Science
+#' @param filepath Path to a file or folder containting the data
+#' @return A data frame
+read_wos_data <- function(filepath) {
+    file_info <- file.info(filepath)
+    df <- NA
+    if (file_info$isdir == TRUE) {
+        df <- read_wos_folder(filepath)
+    }
+    if (file_info$isdir == FALSE) {
+        df <- read_wos_txt(filepath)
+    }
+    return(df)
+}
+
 #' Fix column names of dataset from Web of Science
-#'
 #' @param column_names Column names
 #' @return Fixed column names
 fix_column_names <- function(column_names, fix_format = TRUE) {

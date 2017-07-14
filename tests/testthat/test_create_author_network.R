@@ -24,8 +24,8 @@ author_id <- c("SACHDEVA, SONYA",
 author_label <- author_id
 author_freq <- rep(1, 12)
 author_timescited <- rep(0, 12)
-author_address <- c("US Forest Serv, 1033 Univ Pl,Ste 360, Evanston, IL 60201 U",
-                    "US Forest Serv, 1033 Univ Pl,Ste 360, Evanston, IL 60201 U",
+author_address <- c("US Forest Serv, 1033 Univ Pl,Ste 360, Evanston, IL 60201 USA",
+                    "US Forest Serv, 1033 Univ Pl,Ste 360, Evanston, IL 60201 USA",
                     "Clark Univ, Grad Sch Geog, Worcester, MA 01610 USA",
                     "Univ Siegen, Inst Informat Syst, Siegen, Germany",
                     "Univ Siegen, Inst Informat Syst, Siegen, Germany",
