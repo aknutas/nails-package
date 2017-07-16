@@ -33,8 +33,8 @@ Requires: RColorBrewer, colorspace, digest, doParallel, foreach,
 
 Package: R6
 Source: CRAN
-Version: 2.2.1
-Hash: 530f0b839551f96ec991ce4f93156ee1
+Version: 2.2.2
+Hash: b2366cd9d2f3851a5704b4e192b985c2
 
 Package: RColorBrewer
 Source: CRAN
@@ -105,6 +105,17 @@ Package: base64enc
 Source: CRAN
 Version: 0.1-3
 Hash: c590d29e555926af053055e23ee79efb
+
+Package: bindr
+Source: CRAN
+Version: 0.1
+Hash: e3a02070cf705d3ad1c5af1635a515a3
+
+Package: bindrcpp
+Source: CRAN
+Version: 0.2
+Hash: f5f300f6180e097c7ce174ef3c6307a6
+Requires: Rcpp, bindr, plogr
 
 Package: bitops
 Source: CRAN
@@ -178,9 +189,10 @@ Requires: foreach, iterators
 
 Package: dplyr
 Source: CRAN
-Version: 0.5.0
-Hash: 09fc57f582c74ffa20a57e0a48b27150
-Requires: BH, DBI, R6, Rcpp, assertthat, lazyeval, magrittr, tibble
+Version: 0.7.1
+Hash: 160bc6cc8d861967782cd3fa86287615
+Requires: BH, R6, Rcpp, assertthat, bindrcpp, glue, magrittr,
+    pkgconfig, plogr, rlang, tibble
 
 Package: evaluate
 Source: CRAN
@@ -199,6 +211,11 @@ Version: 1.4.3
 Hash: cd53ef4cf29dc59ce3f8c5c1af735fd1
 Requires: iterators
 
+Package: formatR
+Source: CRAN
+Version: 1.5
+Hash: 258cf79a8dbeedf1c981cdb53837d2af
+
 Package: ggplot2
 Source: CRAN
 Version: 2.2.1
@@ -215,6 +232,11 @@ Source: CRAN
 Version: 2.0-10
 Hash: 0b5b2b840e29335a355e734be998c1ee
 Requires: foreach
+
+Package: glue
+Source: CRAN
+Version: 1.1.1
+Hash: dfd5a27768175ae51d08dc6beba1ef11
 
 Package: gridBase
 Source: CRAN
@@ -333,11 +355,21 @@ Source: CRAN
 Version: 0.4.8-1
 Hash: 6ad605ba7b4b476d84be6632393f5765
 
+Package: pkgconfig
+Source: CRAN
+Version: 2.0.1
+Hash: 0dda4a2654a22b36a715c2b0b6fbacac
+
 Package: pkgmaker
 Source: CRAN
 Version: 0.22
 Hash: 2e5fc2a6b7eaeb1e1d397a8dc5f54480
 Requires: digest, registry, stringr, xtable
+
+Package: plogr
+Source: CRAN
+Version: 0.1-1
+Hash: fb19215402e2d9f1c7f803dcaa806fc2
 
 Package: plyr
 Source: CRAN

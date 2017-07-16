@@ -56,22 +56,31 @@ get_address <- function(df) {
     # Extract and clean names from AuthorAddress field
     name_list <- unlist(stringr::str_extract_all(df["AuthorAddress"],
                                          "\\[.*?\\]"))
-    name_list <- gsub("\\[", "", name_list)     # Remove brackets
-    name_list <- gsub("\\]", "", name_list)     # Remove brackets
-    name_list <- strsplit(name_list, ";")       # Split list of names
-    name_list <- lapply(name_list, trim)        # Remove leading & trailing whitespace
-    name_list <- lapply(name_list, toupper)     # Change to uppercase
 
-    # Extract and clean addresses
-    address_list <- gsub("\\[.*?\\]", "", df["AuthorAddress"])
-    address_list <- unlist(strsplit(address_list, ";"))     # Split list of addresses
-    address_list <- trim(address_list)          # Remove leading & trailing whitespace
+    # If author names are not listed  within square brackets in AuthorAddress,
+    # there is only one address, which is extracted.
+    # Otherwise, name_list and address_list are processed and
+    # names and addresses matched to each other.
+    if (length(name_list) == 0) {
+        address <- df["AuthorAddress"]
+    } else {
+        name_list <- gsub("\\[", "", name_list)     # Remove brackets
+        name_list <- gsub("\\]", "", name_list)     # Remove brackets
+        name_list <- strsplit(name_list, ";")       # Split list of names
+        name_list <- lapply(name_list, trim)        # Remove leading & trailing whitespace
+        name_list <- lapply(name_list, toupper)     # Change to uppercase
 
-    # Match author name to correct address
-    address <- NA
-    for (i in 1:length(name_list)) {
-        if (author_name %in% name_list[[i]]) {
-            address <- address_list[i]
+        # Extract and clean addresses
+        address_list <- gsub("\\[.*?\\]", "", df["AuthorAddress"])
+        address_list <- unlist(strsplit(address_list, ";"))     # Split list of addresses
+        address_list <- trim(address_list)          # Remove leading & trailing whitespace
+
+        # Match author name to correct address
+        address <- NA
+        for (i in 1:length(name_list)) {
+            if (author_name %in% name_list[[i]]) {
+                address <- address_list[i]
+            }
         }
     }
     return(address)
