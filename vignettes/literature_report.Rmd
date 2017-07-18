@@ -15,7 +15,6 @@ vignette: >
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = FALSE, 
                       message=FALSE, 
-                      results='hide', 
                       warning=FALSE)
 ```
 
@@ -102,6 +101,9 @@ author_nodes <- transform(author_nodes,
                           AuthorFullName = reorder(AuthorFullName,
                                                    TotalTimesCited))
 
+# Sort by number of articles by author
+author_nodes <- author_nodes[with (author_nodes, order(-TotalTimesCited)), ]
+
 ggplot(head(author_nodes, 25), aes(AuthorFullName, TotalTimesCited)) +
     geom_bar(stat = "identity", fill = "blue") +
     coord_flip() +
@@ -130,7 +132,7 @@ publications <- transform(publications, Publication = reorder(Publication, Count
 
 
 # WHY???
-# literature <- merge(literature, citationSums,
+# literature <- merge(literature, citation_sums,
 #                    by = "PublicationName" )
 
 ggplot(head(publications, 25), aes(Publication, Count)) +
@@ -144,22 +146,22 @@ ggplot(head(publications, 25), aes(Publication, Count)) +
 
 ```{r}
 # Calculating total citations for each publication.
-citationSums <- aggregate(literature$TimesCited,
+citation_sums <- aggregate(literature$TimesCited,
     by = list(PublicationName = literature$PublicationName),
     FUN = sum, na.rm = T)
 
 # Fix column names
-names(citationSums) <- c("PublicationName", "PublicationTotalCitations")
+names(citation_sums) <- c("PublicationName", "PublicationTotalCitations")
 
 # Trim publication name to maximum of 50 characters for displaying in plot
-citationSums$PublicationName <- strtrim(citationSums$PublicationName, 50)
+citation_sums$PublicationName <- strtrim(citation_sums$PublicationName, 50)
 
 # Sort descending and reorder factor levels accordingly
-citationSums <- citationSums[with (citationSums, order(-PublicationTotalCitations)), ]
-citationSums <- transform(citationSums,
+citation_sums <- citation_sums[with (citation_sums, order(-PublicationTotalCitations)), ]
+citation_sums <- transform(citation_sums,
                           PublicationName = reorder(PublicationName,
                                                     PublicationTotalCitations))
-ggplot(head(citationSums, 25),
+ggplot(head(citation_sums, 25),
        aes(PublicationName, PublicationTotalCitations)) +
     geom_bar(stat = "identity", fill = "orange") +
     coord_flip() +
@@ -169,5 +171,133 @@ ggplot(head(citationSums, 25),
 
 ```
 
+## Important keywords
+Sorted by the number of articles where the keyword is mentioned and by the total number of citations for the keyword.
+```{r}
+# Calculating total citations for each keyword
+
+literature_by_keywords <- arrange_by(literature, "AuthorKeywords")
+
+
+
+# Sometimes AuthorKeywords column is empty.
+# Following if-else hack prevents crashing in those situations,
+# either by using KeywordsPlus column or skipping keyword analysis.
+if (nrow(literature_by_keywords) == 0) {
+  cat("No keywords.")
+} else {
+    keyword_citation_sum <- aggregate(literature_by_keywords$TimesCited,
+                                by = list(AuthorKeywords =
+                            literature_by_keywords$AuthorKeywords), FUN = sum,
+                            na.rm = T)
+    names(keyword_citation_sum) <- c("AuthorKeywords", "TotalTimesCited")
+    
+    keywords <- unlist(strsplit(literature$AuthorKeywords, ";"))
+    keywords <- trim(keywords)
+    keywords <- as.data.frame(table(keywords))
+    names(keywords) <- c("AuthorKeywords", "Freq")
+    
+    keywords <- merge(keywords, keyword_citation_sum, by = "AuthorKeywords")
+    keywords <- keywords[with (keywords, order(-Freq)), ]
+    keywords <- transform(keywords, 
+                          AuthorKeywords = reorder(AuthorKeywords, Freq))
+    
+    ggplot(head(keywords, 25), aes(AuthorKeywords, Freq)) +
+    geom_bar(stat = "identity", fill = "purple") +
+    coord_flip() +
+    ggtitle("Popular keywords") +
+    xlab("Keyword") +
+    ylab("Number of occurences")
+}
+```
+
+```{r}
+if (nrow(literature_by_keywords) > 0) {
+  keywords <- keywords[with (keywords, order(-TotalTimesCited)), ]
+  keywords <- transform(keywords, AuthorKeywords =
+                             reorder(AuthorKeywords, TotalTimesCited))
+  ggplot(head(keywords, 25), aes(AuthorKeywords, TotalTimesCited)) +
+    geom_bar(stat = "identity", fill = "purple") +
+    coord_flip()  +
+    ggtitle("Most cited keywords") +
+    xlab("Keyword") + ylab("Total times cited")
+}
+
+```
+
+## Important papers
+The most important papers and other sources are identified below using three importance measures: 1) in-degree in the citation network, 2) citation count provided by Web of Science (only for papers included in the dataset), and 3) PageRank score in the citation network. The top 25 highest scoring papers are identified using these measures separately. The results are then combined and duplicates are removed. Results are sorted by in-degree, and ties are first broken by citation count and then by the PageRank.
+
+When a [Digital Object Identifier (DOI)](http://www.doi.org/) is available, the full paper can be found using [Resolve DOI](https://dx.doi.org/) website.
+
+```{r}
+# Extract citation nodes
+citation_network <- get_citation_network(literature)
+citation_nodes <- citation_network$citation_nodes
+
+
+# Extract the articles included in the data set and articles not included
+# in the dataset
+citations_lit <- citation_nodes[citation_nodes$Origin == "literature", ]
+citations_ref <- citation_nodes[citation_nodes$Origin == "reference", ]
+
+# Create article strings (document title, reference information and abstract
+# separated by "|")
+citations_lit$Article <- paste(toupper(citations_lit$DocumentTitle), " | ",
+                              citations_lit$FullReference, " | ",
+                                      citations_lit$Abstract)
+```
+
+### Included in the dataset
+These papers were included in the `r nrow(literature)` records downloaded from the Web of Science.
+```{r}
+# Sort citations_lit by TimesCited, decreasing
+citations_lit <- citations_lit[with (citations_lit, order(-TimesCited)), ]
+# Extract top 25
+top_lit <- head(citations_lit, 25)
+# Sort by InDegree, decreasing
+citations_lit <- citations_lit[with (citations_lit, order(-InDegree)), ]
+# Add to list of top 25 most cited papers
+top_lit <- rbind(top_lit, head(citations_lit, 25))
+# Sort by PageRank, decreasing
+citations_lit <- citations_lit[with (citations_lit, order(-PageRank)), ]
+# Add to list of most cited and highest InDegree papers
+top_lit <- rbind(top_lit, head(citations_lit, 25))
+# Remove duplicates
+top_lit <- top_lit[!duplicated(top_lit[, "FullReference"]), ]
+# Sort top_lit by InDegree, break ties by TimesCited, then PageRank.
+top_lit <- top_lit[with (top_lit, order(-InDegree, -TimesCited, -PageRank)), ]
+# Print list
+knitr::kable(top_lit[, c("Article", "InDegree", "TimesCited","PageRank")])
+```
+
+### Not included in the dataset
+These papers and other references were not among the `r nrow(literature)` records downloaded from the Web of Science.
+```{r}
+# Sort citations_ref by InDegree, decreasing
+citations_ref <- citations_ref[with (citations_ref, order(-InDegree)), ]
+# Extract top 25
+top_ref <- head(citations_ref, 25)
+# Sort by PageRank, decreasing
+citations_ref <- citations_ref[with (citations_ref, order(-PageRank)), ]
+# Add to list of highes in degree papers (references)
+top_ref <- rbind(top_ref, head(citations_ref, 25))
+# Remove duplicates
+top_ref <- top_ref[!duplicated(top_ref[, "FullReference"]), ]
+# Sort by InDegree, break ties by PageRank
+top_ref <- top_ref[with (top_ref, order(-InDegree, -PageRank)), ]
+# Print results
+kable(top_ref[, c("FullReference", "InDegree", "PageRank")])
+```
+
+## Most referenced publications
+```{r}
+print("Placeholder")
+```
+
+## Topic Model
+```{r}
+print("Placeholder")
+```
 
 
