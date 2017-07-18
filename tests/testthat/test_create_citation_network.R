@@ -48,6 +48,10 @@ nodes_colnames <- c("Id",
                     "Origin",
                     "Label")
 
+citation_network_nodes_colnames <- c(nodes_colnames,
+                                     "PageRank",
+                                     "InDegree")
+
 edges_id <- c(rep(3, 43), rep(36, 66), rep(100, 40))
 edges_DocumentTitle <- c(rep(df$DocumentTitle[1], 43),
                          rep(df$DocumentTitle[2], 66),
@@ -170,3 +174,59 @@ test_that("get_citation_edges works", {
     expect_equal(sum(is.na(edges$Source)), 0)
     expect_equal(sum(is.na(edges$Target)), 0)
 })
+
+test_that("get_citation_network works", {
+    citation_network <- get_citation_network(df)
+    nodes_3 <- citation_network$citation_nodes
+    edges <- citation_network$citation_edges
+
+    # Nodes
+    # Number of rows
+    expect_equal(nrow(nodes_3), number_of_rows - sum(duplicated(rl$Reference)) + 3)
+    # ID
+    expect_equal(nodes_3$Id[1], DOI_1)
+    expect_equal(nodes_3$Id[43], DOI_43)
+    expect_equal(nodes_3$Id[44], DOI_44)
+    expect_equal(nodes_3$Id[147], DOI_148)
+    expect_equal(tail(nodes_3$Id, 3), df$DOI)
+    # Year
+    expect_equal(nodes_3$YearPublished[1], year_1)
+    expect_equal(nodes_3$YearPublished[43], year_43)
+    expect_equal(nodes_3$YearPublished[44], year_44)
+    expect_equal(nodes_3$YearPublished[147], year_148)
+    expect_equal(tail(nodes_3$YearPublished, 3), df$YearPublished)
+    # Full reference string
+    expect_equal(nodes_3$FullReference[1], reference_1)
+    expect_equal(nodes_3$FullReference[43], reference_43)
+    expect_equal(nodes_3$FullReference[44], reference_44)
+    expect_equal(nodes_3$FullReference[147], reference_148)
+    expect_equal(tail(nodes_3$FullReference, 3), df$ReferenceString)
+    # Column names
+    expect_equal(names(nodes_3), citation_network_nodes_colnames)
+    # Duplicated values
+    expect_equal(sum(duplicated(nodes_3)), 0)
+
+    # Edges
+    # Number of rows
+    expect_equal(nrow(edges), number_of_rows)
+    # Source
+    expect_equal(edges$Source[1:43], rep(df$DOI[1], 43))
+    expect_equal(edges$Source[44:109], rep(df$DOI[2], 66))
+    expect_equal(edges$Source[110:149], rep(df$DOI[3], 40))
+    # Target
+    expect_equal(edges$Target[1], DOI_1)
+    expect_equal(edges$Target[43], DOI_43)
+    expect_equal(edges$Target[44], DOI_44)
+    expect_equal(edges$Target[148], DOI_148)
+    # id
+    expect_equal(edges$id, edges_id)
+    # Year Published
+    expect_equal(edges$YearPublished, rep(2017, nrow(edges)))
+    # Document title
+    expect_equal(edges$DocumentTitle, edges_DocumentTitle)
+    # NAs
+    expect_equal(sum(is.na(edges$Source)), 0)
+    expect_equal(sum(is.na(edges$Target)), 0)
+})
+
+
