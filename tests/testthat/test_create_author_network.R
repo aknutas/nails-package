@@ -57,6 +57,7 @@ author_location <- c(rep("Evanston, IL 60201 USA;Worcester, MA 01610 USA", 3),
                      rep("Siegen, Germany", 5),
                      rep("NF A1C 5S7, Canada;Pau, France;Dijon, France", 4),
                      rep("Cleveland, OH USA;Cleveland, OH 44106 USA", 5 ))
+
 comparison_df <- data.frame(author_id,
                             author_label,
                             author_freq,
@@ -65,7 +66,68 @@ comparison_df <- data.frame(author_id,
                             author_email,
                             author_location,
                             stringsAsFactors = FALSE)
+
 comparison_df <- comparison_df[with( comparison_df, order(author_id)),]
+
+Source <- c("SACHDEVA, SONYA",
+            "SACHDEVA, SONYA",
+            "MCCAFFREY, SARAH",
+            "LUDWIG, THOMAS",
+            "LUDWIG, THOMAS",
+            "LUDWIG, THOMAS",
+            "LUDWIG, THOMAS",
+            "KOTTHAUS, CHRISTOPH",
+            "KOTTHAUS, CHRISTOPH",
+            "KOTTHAUS, CHRISTOPH",
+            "REUTER, CHRISTIAN",
+            "REUTER, CHRISTIAN",
+            "VAN DONGEN, SOREN",
+            "RAAD, ELIE",
+            "RAAD, ELIE",
+            "RAAD, ELIE",
+            "CHBEIR, RICHARD",
+            "CHBEIR, RICHARD",
+            "DIPANDA, ALBERT",
+            "JANAKI, NAFISEH",
+            "JANAKI, NAFISEH",
+            "JANAKI, NAFISEH",
+            "JANAKI, NAFISEH",
+            "WHITNEY, JON",
+            "WHITNEY, JON",
+            "WHITNEY, JON",
+            "JANOWCZYK, ANDREW",
+            "JANOWCZYK, ANDREW",
+            "MADABHUSHI, ANANT")
+
+Target <- c("MCCAFFREY, SARAH",
+            "LOCKE, DEXTER",
+            "LOCKE, DEXTER",
+            "KOTTHAUS, CHRISTOPH",
+            "REUTER, CHRISTIAN",
+            "VAN DONGEN, SOREN",
+            "PIPEK, VOLKMAR",
+            "REUTER, CHRISTIAN",
+            "VAN DONGEN, SOREN",
+            "PIPEK, VOLKMAR",
+            "VAN DONGEN, SOREN",
+            "PIPEK, VOLKMAR",
+            "PIPEK, VOLKMAR",
+            "CHBEIR, RICHARD",
+            "DIPANDA, ALBERT",
+            "RAAD, ELIANA J.",
+            "DIPANDA, ALBERT",
+            "RAAD, ELIANA J.",
+            "RAAD, ELIANA J.",
+            "WHITNEY, JON",
+            "JANOWCZYK, ANDREW",
+            "MADABHUSHI, ANANT",
+            "AVRIL, STEFANIE",
+            "JANOWCZYK, ANDREW",
+            "MADABHUSHI, ANANT",
+            "AVRIL, STEFANIE",
+            "MADABHUSHI, ANANT",
+            "AVRIL, STEFANIE",
+            "AVRIL, STEFANIE")
 
 test_that("get_author_nodes works", {
     nodes <- get_author_nodes(df)
@@ -76,4 +138,30 @@ test_that("get_author_nodes works", {
     expect_equal(nodes$TotalTimesCited, comparison_df$author_timescited)
     expect_equal(nodes$AuthorAddress, comparison_df$author_address)
     expect_equal(nodes$Location, comparison_df$author_location)
+})
+
+test_that("get_author_edges works", {
+    edges <- get_author_edges(df)
+    expect_equal(Source, edges$Source)
+    expect_equal(Target, edges$Target)
+
+})
+
+test_that("get_author_network works", {
+    author_network <- get_author_network(df)
+    nodes <- author_network$author_nodes
+    nodes <- nodes[with( nodes, order(Id)), ]
+    edges <- author_network$author_edges
+
+    # Nodes
+    expect_equal(nodes$Id, comparison_df$author_id)
+    expect_equal(nodes$Label, comparison_df$author_label)
+    expect_equal(nodes$Freq, comparison_df$author_freq)
+    expect_equal(nodes$TotalTimesCited, comparison_df$author_timescited)
+    expect_equal(nodes$AuthorAddress, comparison_df$author_address)
+    expect_equal(nodes$Location, comparison_df$author_location)
+
+    # Edges
+    expect_equal(Source, edges$Source)
+    expect_equal(Target, edges$Target)
 })
