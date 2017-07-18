@@ -124,3 +124,29 @@ get_citation_edges <- function(reference_list) {
 
     return(citation_edges)
 }
+
+#' Extract citation network nodes and edges from literature data
+#' @param df A data frame containing literature data
+#' @param as_igraph Logical: should results be returned as an igraph?
+#' @return A list containing nodes and edges in data frames, or an igraph.
+get_citation_network <- function(df, as_igraph = FALSE) {
+    # Extract nodes and edges
+    reference_list <- get_reference_list(df)
+    citation_nodes <- get_citation_nodes(df, reference_list)
+    citation_edges <- get_citation_edges(reference_list)
+
+    # Create igraph for in degree and PageRank calculations
+    citation_network <- igraph::graph.data.frame(citation_edges,
+                                               vertices = citation_nodes)
+    # Calculate PageRanks
+    citation_nodes$PageRank <- igraph::page.rank(citation_network)$vector
+    # Calculate in-degree
+    citation_nodes$InDegree <- igraph::degree(citation_network, mode = "in")
+
+    # By default, return results in a list of two data frames
+    if (!as_igraph) {
+        citation_network <- list(citation_nodes = citation_nodes,
+                        citation_edges = citation_edges)
+    }
+    return(citation_network)
+}
