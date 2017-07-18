@@ -60,6 +60,7 @@ read_wos_txt <- function(filepath, fix_names = TRUE) {
 #' Read file or folder of files downloaded from Web of Science
 #' @param filepath Path to a file or folder containting the data
 #' @return A data frame
+#' @export
 read_wos_data <- function(filepath) {
     file_info <- file.info(filepath)
     df <- NA

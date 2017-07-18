@@ -77,7 +77,8 @@ print("Placeholder")
 Sorted by the number of articles published and by the total number of citations.
 ```{r}
 # Get author network nodes, which contain the required information
-author_nodes <- get_author_nodes(literature)
+author_network <- get_author_network(literature)
+author_nodes <- author_network$author_nodes
 # Change Id to AuthorFullName
 names(author_nodes)[names(author_nodes) == "Id"] <- "AuthorFullName"
 

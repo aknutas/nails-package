@@ -159,3 +159,27 @@ get_author_edges <- function(df) {
     return(edges)
 }
 
+#' Extract author network nodes and edges from literature data
+#' @param df A data frame containing literature data
+#' @param as_igraph Logical: should results be returned as an igraph?
+#' @return A list containing nodes and edges in data frames, or an igraph.
+#' @export
+get_author_network <- function(df, as_igraph = FALSE) {
+    author_nodes <- get_author_nodes(df)
+    author_edges <- get_author_edges(df)
+
+    # Create igraph for in degree and PageRank calculations
+    author_network <- igraph::graph.data.frame(author_edges,
+                                                 vertices = author_nodes)
+    # Calculate PageRanks
+    author_nodes$PageRank <- igraph::page.rank(author_network)$vector
+    # Calculate in-degree
+    author_nodes$InDegree <- igraph::degree(author_network, mode = "in")
+
+    # By default, return results in a list of two data frames
+    if (!as_igraph) {
+        author_network <- list(author_nodes = author_nodes,
+                                 author_edges = author_edges)
+    }
+    return(author_network)
+}

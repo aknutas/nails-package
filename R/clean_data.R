@@ -43,6 +43,7 @@ change_uppercase <- function(df, columns) {
 #' Reprocess data from WOS for further analysis
 #' @param df A data frame containing data from WOS.
 #' @return A data frame
+#' @export
 clean_wos_data <- function(df) {
     data_type <- check_data(df)
     if (data_type == 1) {
@@ -172,6 +173,7 @@ get_location <- function(x) {
 #' @param selection A string with a column name
 #' @param split A character used to split selection
 #' @return A data frame with literature organised by selected column
+#' @export
 arrange_by <- function(df, selection, sep = ";") {
     # Check data
 

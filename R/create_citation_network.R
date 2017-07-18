@@ -129,6 +129,7 @@ get_citation_edges <- function(reference_list) {
 #' @param df A data frame containing literature data
 #' @param as_igraph Logical: should results be returned as an igraph?
 #' @return A list containing nodes and edges in data frames, or an igraph.
+#' @export
 get_citation_network <- function(df, as_igraph = FALSE) {
     # Extract nodes and edges
     reference_list <- get_reference_list(df)
