@@ -14,6 +14,7 @@ addons:
 
 r_packages:
   - covr
+  - roxygen2
 
 after_success:
   - Rscript -e 'library(covr); codecov()'
