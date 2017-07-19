@@ -82,6 +82,7 @@ test_that("get_reference_list works", {
 })
 
 test_that("get_reference_nodes works", {
+    rl <- get_reference_list(df)
     nodes <- get_reference_nodes(rl)
     # Number of rows
     expect_equal(nrow(nodes), number_of_rows - sum(duplicated(rl$Reference)))
@@ -124,6 +125,7 @@ test_that("get_literature_nodes works", {
 })
 
 test_that("get_citation_nodes works", {
+    rl <- get_reference_list(df)
     nodes_3 <- get_citation_nodes(df, rl)
     # Number of rows
     expect_equal(nrow(nodes_3), number_of_rows - sum(duplicated(rl$Reference)) + 3)
@@ -152,6 +154,7 @@ test_that("get_citation_nodes works", {
 })
 
 test_that("get_citation_edges works", {
+    rl <- get_reference_list(df)
     edges <- get_citation_edges(rl)
     # Number of rows
     expect_equal(nrow(edges), number_of_rows)
