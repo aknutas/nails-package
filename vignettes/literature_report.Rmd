@@ -24,10 +24,7 @@ knitr::opts_chunk$set(echo = FALSE,
 
 # Load packages
 devtools::load_all()
-library(nails)
-library(ggplot2)
-library(knitr)
-library(igraph)
+require(ggplot2)
 
 # Set ggplot theme
 theme_set(theme_minimal(12))
@@ -288,12 +285,39 @@ top_ref <- top_ref[!duplicated(top_ref[, "FullReference"]), ]
 # Sort by InDegree, break ties by PageRank
 top_ref <- top_ref[with (top_ref, order(-InDegree, -PageRank)), ]
 # Print results
-kable(top_ref[, c("FullReference", "InDegree", "PageRank")])
+knitr::kable(top_ref[, c("FullReference", "InDegree", "PageRank")])
 ```
 
 ## Most referenced publications
 ```{r}
-print("Placeholder")
+references <- unlist(strsplit(literature$CitedReferences, ";"))
+
+get_publication <- function(x) {
+    publication <- "Not found"
+    try(
+        publication <- unlist(strsplit(x, ","))[[3]],
+        silent = TRUE
+    )
+    return(publication)
+}
+
+refPublications <- sapply(references, get_publication)
+refPublications <- sapply(refPublications, trim)
+refPublications <- refPublications[refPublications != "Not found"]
+refPublications <- as.data.frame(table(refPublications))
+names(refPublications) <- c("Publication", "Count")
+refPublications <- refPublications[with (refPublications, order(-Count)), ]
+
+refPublications <- transform(refPublications,
+                             Publication = reorder(Publication, Count))
+
+ggplot(head(refPublications, 25), aes(Publication, Count)) +
+    geom_bar(stat = "identity", fill = "orange") +
+    coord_flip() +
+    theme(legend.position = "none") +
+    ggtitle("Most referenced publications") +
+    xlab("Publication") +
+    ylab("Count")
 ```
 
 ## Topic Model
