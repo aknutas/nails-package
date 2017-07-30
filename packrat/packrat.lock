@@ -1,6 +1,6 @@
 PackratFormat: 1.4
 PackratVersion: 0.4.8.1
-RVersion: 3.3.3
+RVersion: 3.4.1
 Repos: CRAN=https://cran.rstudio.com/
 
 Package: BH
@@ -267,14 +267,14 @@ Requires: R6, curl, jsonlite, mime, openssl
 
 Package: igraph
 Source: CRAN
-Version: 1.0.1
-Hash: 26ac36402e881905359daabfd9ba4057
-Requires: NMF, irlba, magrittr
+Version: 1.1.2
+Hash: 07d33f151f94269a4573d354104e81aa
+Requires: irlba, magrittr, pkgconfig
 
 Package: irlba
 Source: CRAN
 Version: 2.2.1
-Hash: 129c56a5ab6def05c411673cabe04054
+Hash: 55fe0e84cd75f28f34804f8b75902aff
 
 Package: iterators
 Source: CRAN

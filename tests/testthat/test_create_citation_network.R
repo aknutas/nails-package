@@ -179,6 +179,7 @@ test_that("get_citation_edges works", {
 })
 
 test_that("get_citation_network works", {
+    rl <- get_reference_list(df)
     citation_network <- get_citation_network(df)
     nodes_3 <- citation_network$citation_nodes
     edges <- citation_network$citation_edges
