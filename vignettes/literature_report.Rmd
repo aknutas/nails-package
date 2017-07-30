@@ -360,7 +360,7 @@ topicmodel <- build_topicmodel_from_literature(literature)
 topickeywords <- topicmodels::terms(topicmodel$fit, 10)
 tw <- data.frame(topickeywords)
 colnames(tw) <- gsub('X', 'Topic ', colnames(tw))
-kable(tw, col.names = colnames(tw))
+knitr::kable(tw, col.names = colnames(tw))
 ```
 
 
