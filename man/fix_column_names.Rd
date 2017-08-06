@@ -4,7 +4,7 @@
 \alias{fix_column_names}
 \title{Fix column names of dataset from Web of Science}
 \usage{
-fix_column_names(column_names)
+fix_column_names(column_names, fix_format = TRUE)
 }
 \arguments{
 \item{column_names}{Column names}
