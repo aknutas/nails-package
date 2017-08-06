@@ -32,8 +32,8 @@ build_stm_corpus <- function(textlist) {
     # Prepare documents into corpus
     # Also processes the following by default:
     # Lowercases, removes SMART stopwords, removes numbers, removes punctuation, wordlength min is 3
-    processed <- stm::textProcessor(textlist, stem = TRUE)
-    out <- stm::prepDocuments(processed$documents, processed$vocab)
+    processed <- stm::textProcessor(textlist, stem = TRUE, verbose = FALSE)
+    out <- stm::prepDocuments(processed$documents, processed$vocab, verbose = FALSE)
     return(out)
 }
 

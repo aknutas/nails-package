@@ -29,7 +29,7 @@ In this paper we present the literature analysis tool NAILS, which uses a series
 
 You can download, install and use our R package by installing it with the [install_github](https://www.rdocumentation.org/packages/devtools/versions/1.12.0/topics/install_github) function from the R [devtools package](https://cran.r-project.org/web/packages/devtools/index.html). See further use instructions in the [README](https://github.com/aknutas/nails-package/blob/master/README.md) or in our R package documentation (to be added once complete).
 
-Our software depends on splitstackshape[4], reshape[5], plyr[6], stringr[7], tm[8], SnowballC[9], lda[10], LDAvis[11], igraph[12], knitr[13] and markdown[14]. When installing the nails package, proper versions should be downloaded and installed automatically as dependencies.
+Our software depends on splitstackshape[4], reshape[5], plyr[6], stringr[7], tm[8], SnowballC[9], lda[10], LDAvis[11], igraph[12], knitr[13] and markdown[14]. The stm[15] package is used to calculate the number of topics for topicmodeling. When installing the nails package, proper versions should be downloaded and installed automatically as dependencies.
 
 Alternatively you can upload files to our online analysis server. You can view a brief [video tutorial](https://youtu.be/I1bRXQs_zMk?list=PLJiFJenPKrLOpdu7E1gEhVEAWF7CLQs_2) on how to get started.
 
@@ -61,3 +61,5 @@ Alternatively you can upload files to our online analysis server. You can view a
 [13] Yihui Xie (2016). knitr: A General-Purpose Package for Dynamic Report Generation in R. R package version 1.15.1.
 
 [14] JJ Allaire, Jeffrey Horner, Vicent Marti and Natacha Porte (2015). markdown: 'Markdown' Rendering for R. R package version 0.7.7. https://CRAN.R-project.org/package=markdown
+
+[15] Margaret E. Roberts, Brandon M. Stewart and Dustin Tingley (2017). stm: R Package for Structural Topic Models. http://www.structuraltopicmodel.com.
