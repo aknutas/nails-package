@@ -25,11 +25,11 @@ If you use the software in your scientific work, please consider citing us.
 
 How to Use
 ----
-To be added. (once the R package is completed)
+Please build and read the package man pages and the vignette for use instructions.
 
 Requirements
 ----
-For now the project verifiably works on R version 3.4.0. See package requirements in DESCRIPTION and packrat/packrat.lock files.
+For now the project verifiably works on R version 3.4.1. See package requirements in DESCRIPTION and packrat/packrat.lock files.
 
 We are open source and free software
 ----
