@@ -29,7 +29,7 @@ How to Use
 2. Install R devtools, for example from the R command line. *install.packages("devtools")*
 3. Then use R devtools to install the package itself, for example from the R command line. *devtools::install_github("aknutas/nails-package")*
 4. Get a dataset. You can follow the [instructions](http://nailsproject.net/#manually) about how to download your own dataset from Web of Science or watch the [introduction video](https://youtu.be/I1bRXQs_zMk) on how to download data from the Web of Science. Alternatively you can download a testing dataset from the package [repository subdirectory](https://github.com/aknutas/nails-package/tree/master/tests/testthat/test_data).
-5. Read documentation and the getting started instructions from the package documentation [vignette](http://aknutas.github.io/nails-package/vignette.pdf).
+5. Read documentation and the getting started instructions from the package documentation [vignette](http://aknutas.github.io/nails-package/vignettes/literature_report.html).
 
 Requirements
 ----
