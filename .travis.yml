@@ -11,6 +11,7 @@ addons:
     - gsl-bin
     - libgsl0-dev
     - libgsl0ldbl
+    - libgsl2
 
 r_packages:
   - covr
