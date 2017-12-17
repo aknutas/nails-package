@@ -8,8 +8,8 @@ warnings_are_errors: false
 addons:
   apt:
     packages:
-  - gsl-bin
-  - libgsl0-dev
+    - gsl-bin
+    - libgsl0-dev
 
 r_packages:
   - covr
