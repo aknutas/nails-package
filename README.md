@@ -29,7 +29,7 @@ Please build and read the package man pages and the vignette for use instruction
 
 Requirements
 ----
-For now the project verifiably works on R version 3.4.1. See package requirements in DESCRIPTION and packrat/packrat.lock files.
+For now the project verifiably works on R version 3.4.2. See package requirements in the DESCRIPTION file.
 
 We are open source and free software
 ----
