@@ -35,7 +35,6 @@ get_reference_nodes <- function(reference_list) {
                                  ConferenceLocation = NA,
                                  ConferenceSponsors = NA,
                                  AuthorKeywords = NA,
-                                 SubjectCategory = NA,
                                  TimesCited = NA,
                                  Abstract = NA,
                                  DOI = NA,
@@ -69,12 +68,11 @@ get_literature_nodes <- function(df) {
                                           ConferenceLocation,
                                           ConferenceSponsors,
                                           AuthorKeywords,
-                                          SubjectCategory,
                                           TimesCited,
                                           Abstract,
                                           DOI))
 
-    names(literature_nodes)[c(1, 3, 20)] <- c("Id",
+    names(literature_nodes)[c(1, 3, 19)] <- c("Id",
                                               "FullReference",
                                               "DOI")
     index <- literature_nodes$Id == ""

@@ -50,8 +50,7 @@ clean_wos_data <- function(df) {
         names(df) <- fixed_fieldtags
     }
     df <- change_lowercase(df, columns = c("AuthorKeywords",
-                                           "KeywordsPlus",
-                                           "SubjectCategory"))
+                                           "KeywordsPlus"))
 
     df <- change_uppercase(df, columns = c("AuthorFullName",
                                            "CitedReferences",
@@ -61,7 +60,6 @@ clean_wos_data <- function(df) {
                                   "AuthorKeywords",
                                   "KeywordsPlus",
                                   "DocumentTitle",
-                                  "SubjectCategory",
                                   "CitedReferences"))
 
     df$CitedReferences <- gsub("DOI DOI", "DOI", df$CitedReferences)

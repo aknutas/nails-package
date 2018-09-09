@@ -36,10 +36,10 @@ read_wos_folder <- function(filepath, fix_names = TRUE) {
 #' @return A data frame
 read_wos_txt <- function(filepath, fix_names = TRUE) {
     data_sample <- read.delim2(filepath, fileEncoding = "UTF-16",
-                             quote = "", row.names=NULL,
-                             header = FALSE,
-                             stringsAsFactors = FALSE,
-                             nrows = 10)
+                               quote = "", row.names=NULL,
+                               header = FALSE,
+                               stringsAsFactors = FALSE,
+                               nrows = 10)
     colindex <- !is.na(data_sample[1, ])
     data_names <- as.character(data_sample[1, colindex])
 
@@ -51,7 +51,9 @@ read_wos_txt <- function(filepath, fix_names = TRUE) {
 
     df <- df[, colindex]
     names(df) <- data_names
-    if (fix_names) {
+    df <- df[!duplicated(df), ]
+
+    if(fix_names) {
         names(df) <- fix_column_names(names(df))
     }
     return(df)
