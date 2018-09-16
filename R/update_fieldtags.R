@@ -4,12 +4,15 @@
 # Url addresses for Web of Science field tag lists
 
 # Primary source for field tags
-FIELDTAG_URL_MAIN <- "https://images.webofknowledge.com/WOKRS53B4/help/WOS/hs_wos_fieldtags.html"
+FIELDTAG_URL_MAIN <-
+    "https://images.webofknowledge.com/WOKRS53B4/help/WOS/hs_wos_fieldtags.html"
 
 # Secondary sources for field tags. These are used for field tags not found in
 # the primary source.
-FIELDTAG_URL_EXTRA <- "https://images.webofknowledge.com/images/help/WOK/hs_alldb_fieldtags.html"
-FIELDTAGS_URL_EXTRA_2 <- "https://images.webofknowledge.com/images/help/WOS/hs_wos_fieldtags.html"
+FIELDTAG_URL_EXTRA <-
+    "https://images.webofknowledge.com/images/help/WOK/hs_alldb_fieldtags.html"
+FIELDTAGS_URL_EXTRA_2 <-
+    "https://images.webofknowledge.com/images/help/WOS/hs_wos_fieldtags.html"
 
 #' Helper function for downloading fieldtags from Web of Science
 #' @param url A URL as a string
@@ -29,8 +32,10 @@ get_fieldtags <- function(url) {
 
 #' Download and merge all fieldtags from Web of Science
 #' @param main_url A URL for primary field tags
-#' @param extra_url A URL for supplementary field tags. Used for field tags missing in main_url.
-#' @param extra_url_2 A URL for supplementary field tags. Used for field tags missing in extra_url.
+#' @param extra_url A URL for supplementary field tags.
+#' Used for field tags missing in main_url.
+#' @param extra_url_2 A URL for supplementary field tags.
+#' Used for field tags missing in extra_url.
 #' @return A data frame containing all field tags
 get_all_fieldtags <- function(main_url, extra_url, extra_url_2) {
     # Get primary field tags

@@ -85,13 +85,18 @@ fix_column_names <- function(column_names, fix_format = TRUE) {
 
     if (fix_format) {
         fields[fields == "KeywordsPlus®"] <- "KeywordsPlus"
-        fields[fields == "PublicationType(J=Journal;B=Book;S=Series)"] <- "PublicationType"
-        fields[fields == "29-CharacterSourceAbbreviation"] <- "SourceAbbreviation"
+        fields[fields ==
+            "PublicationType(J=Journal;B=Book;S=Series)"] <- "PublicationType"
+        fields[fields ==
+            "29-CharacterSourceAbbreviation"] <- "SourceAbbreviation"
         fields[fields == "DigitalObjectIdentifier(DOI)"] <- "DOI"
-        fields[fields == "ElectronicInternationalStandardSerialNumber(eISSN)"] <- "eISSN"
-
-        fields[fields == "ORCIDIdentifier(OpenResearcherandContributorID)"] <- "ORCID"
-        fields[fields == "TotalTimesCited(WebofScienceCore,BIOSISCitationIndex,andChinese\nScienceCitationDatabase)"] <- "TimesCited"
+        fields[fields ==
+            "ElectronicInternationalStandardSerialNumber(eISSN)"] <- "eISSN"
+        fields[fields ==
+            "ORCIDIdentifier(OpenResearcherandContributorID)"] <- "ORCID"
+        fields[fields ==
+            paste("TotalTimesCited(WebofScienceCore,BIOSISCitationIndex,",
+            "andChinese\nScienceCitationDatabase)", sep = "")] <- "TimesCited"
         fields[fields == "UsageCount(Last180Days)"] <- "UsageCountLast180Days"
         fields[fields == "UsageCount(Since2013)"] <- "UsageCountSince2013"
         fields[fields == "BookDigitalObjectIdentifier(DOI)"] <- "BookDOI"

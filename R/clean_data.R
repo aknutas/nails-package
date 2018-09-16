@@ -103,7 +103,7 @@ make_reference <- function(x) {
 #' @param x A string containing full author names
 #' @return A string
 get_name <- function(x) {
-    name = NA
+    name <- NA
     try( {
         names <- unlist(strsplit(x["AuthorFullName"], ";"))
         names <- names[1]

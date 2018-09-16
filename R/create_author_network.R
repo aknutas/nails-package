@@ -7,8 +7,8 @@ get_author_nodes <- function(df) {
 
     # Calculating total number of citations for each author
     citation_sums <- aggregate(authors$TimesCited,
-                               by = list(AuthorFullName = authors$AuthorFullName),
-                               FUN = sum)
+                        by = list(AuthorFullName = authors$AuthorFullName),
+                        FUN = sum)
     # Fixing column names
     names(citation_sums) <- c("AuthorFullName", "TotalTimesCited")
     authors <- merge(authors, citation_sums,
@@ -67,13 +67,18 @@ get_address <- function(df) {
         name_list <- gsub("\\[", "", name_list)     # Remove brackets
         name_list <- gsub("\\]", "", name_list)     # Remove brackets
         name_list <- strsplit(name_list, ";")       # Split list of names
-        name_list <- lapply(name_list, trim)        # Remove leading & trailing whitespace
+        name_list <- lapply(name_list, trim)        # Remove leading &
+                                                    # trailing whitespace
         name_list <- lapply(name_list, toupper)     # Change to uppercase
 
         # Extract and clean addresses
         address_list <- gsub("\\[.*?\\]", "", df["AuthorAddress"])
-        address_list <- unlist(strsplit(address_list, ";"))     # Split list of addresses
-        address_list <- trim(address_list)          # Remove leading & trailing whitespace
+
+        # Split list of addresses
+        address_list <- unlist(strsplit(address_list, ";"))
+
+        # Remove leading & trailing whitespace
+        address_list <- trim(address_list)
 
         # Match author name to correct address
         address <- NA
@@ -147,14 +152,14 @@ get_author_edges <- function(df) {
 
     # Subset data. Use this to select columns to include in network data
     edges <- subset(edges,
-                    select = c("Source",          # Don't change. Gephi needs this!
-                               "Target",          # Don't change. Gephi needs this!
-                               "Type",            # Don't change. Gephi needs this!
-                               "id",              # Don't change. Gephi needs this!
-                               "YearPublished",   # This and below rows can be changed.
-                               "DocumentTitle",
-                               "DOI",
-                               "TimesCited"))
+                select = c("Source",        # Don't change. Gephi needs this!
+                           "Target",        # Don't change. Gephi needs this!
+                           "Type",          # Don't change. Gephi needs this!
+                           "id",            # Don't change. Gephi needs this!
+                           "YearPublished", # This and below rows can be changed
+                           "DocumentTitle",
+                           "DOI",
+                           "TimesCited"))
 
     return(edges)
 }
