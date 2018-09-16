@@ -96,7 +96,7 @@ topicmodels_json_ldavis <- function(fitted, corpus, doc_term){
     theta <- topicmodels::posterior(fitted)$topics %>% as.matrix
     vocab <- colnames(phi)
     doc_length <- vector()
-    for (i in 1:length(corpus)) {
+    for (i in seq_along(corpus)) {
         temp <- paste(corpus[[i]]$content, collapse = ' ')
         doc_length <- c(doc_length, stri_count(temp, regex = '\\S+'))
     }

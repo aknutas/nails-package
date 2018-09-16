@@ -73,7 +73,7 @@ clean_wos_data <- function(df) {
     df$ReferenceString <- apply(df, 1, make_reference)
     df <- df[!duplicated(df[, "ReferenceString"]), ]
 
-    df$id <- 1:nrow(df)
+    df$id <- seq_along(df[, 1])
     return(df)
 }
 

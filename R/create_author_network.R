@@ -82,7 +82,7 @@ get_address <- function(df) {
 
         # Match author name to correct address
         address <- NA
-        for (i in 1:length(name_list)) {
+        for (i in seq_along(name_list)) {
             if (author_name %in% name_list[[i]]) {
                 address <- address_list[i]
             }
