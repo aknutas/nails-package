@@ -122,7 +122,7 @@ get_author_edges <- function(df) {
     edges <- lapply(df$AuthorFullName, create_edges)
 
     # Count the length of edges created from each row
-    nodelengths <- sapply(edges, length)
+    nodelengths <- vapply(edges, length, FUN.VALUE = numeric(1))
 
     # Put edges into a data frame
     edges <- unlist(edges)

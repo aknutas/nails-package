@@ -67,7 +67,8 @@ clean_wos_data <- function(df) {
     df$TimesCited <- as.numeric(df$TimesCited)
     df$CitedReferenceCount <- as.numeric(df$CitedReferenceCount)
 
-    df$Location <- sapply(df$AuthorAddress, get_location)
+    df$Location <- vapply(df$AuthorAddress, get_location,
+                          FUN.VALUE = character(1))
 
     df$ReferenceString <- apply(df, 1, make_reference)
     df <- df[!duplicated(df[, "ReferenceString"]), ]
@@ -128,6 +129,7 @@ get_DOI <- function(x) {
     if (length(x) == 2) {
         DOI <- x[2]
     }
+    DOI <- as.character(DOI)
     return(DOI)
 }
 
@@ -152,11 +154,12 @@ get_location <- function(x) {
         x <- gsub("\\[.*?\\]", "", x)
         x <- unlist(strsplit(x, ";"))
         x <- x[x != " "]
-        cities <- sapply(x, function(x) tail(unlist(strsplit(x, ",")), 2))
+        cities <- vapply(x, function(x) tail(unlist(strsplit(x, ",")), 2),
+                         FUN.VALUE = character(2))
         city <- apply(cities, 2, function(x) gsub(".*[0-9]+ ", "", x[1]))
-        city <- sapply(city, trim)
+        city <- vapply(city, trim, FUN.VALUE = character(1))
         #   country <- gsub(" ", "", cities[2, ])
-        country <- sapply(cities[2, ], trim)
+        country <- vapply(cities[2, ], trim, FUN.VALUE = character(1))
         location <- paste(paste(city, country, sep = ", "), collapse = ";")
     }
     else {

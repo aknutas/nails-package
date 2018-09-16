@@ -8,9 +8,9 @@ get_reference_list <- function(df) {
     names(rl)[names(rl) == 'CitedReferences'] <- "FullReference"
 
     year <- strsplit(rl$FullReference, ",")
-    rl$ReferenceYear <- sapply(year, get_year)
+    rl$ReferenceYear <- vapply(year, get_year, FUN.VALUE = numeric(1))
     references <- strsplit(rl$FullReference, " DOI ")
-    rl$Reference <- sapply(references, get_DOI)
+    rl$Reference <- vapply(references, get_DOI, FUN.VALUE = character(1))
     rl$Reference[is.na(rl$Reference)] <- rl$FullReference[is.na(rl$Reference)]
     return(rl)
 }
