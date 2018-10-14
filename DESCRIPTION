@@ -9,21 +9,21 @@ License: GPL-3 | file LICENSE
 Encoding: UTF-8
 LazyData: true
 Imports:
-    stm (>= 1.2.2),
-    tm (>= 0.7-1),
+    dplyr (>= 0.7.2),
     LDAvis (>= 0.3.2),
     igraph (>= 1.1.2),
-    topicmodels (>= 0.2-6),
-    dplyr (>= 0.7.2),
-    stringi (>= 1.1.5),
     plyr (>= 1.8.4),
     splitstackshape (>= 1.4.2),
-    stringr (>= 1.2.0)
+    stringi (>= 1.1.5),
+    stringr (>= 1.2.0),
+    stm (>= 1.2.2),
+    tm (>= 0.7-1),
+    topicmodels (>= 0.2-6)
 Suggests:
-    testthat (>= 1.0.2),
+    formatR (>= 1.5),
     knitr (>= 1.17),
     rmarkdown (>= 1.6),
     roxygen2 (>= 6.0.1),
-    formatR (>= 1.5)
-RoxygenNote: 6.0.1
+    testthat (>= 1.0.2)
+RoxygenNote: 6.1.0
 VignetteBuilder: knitr
